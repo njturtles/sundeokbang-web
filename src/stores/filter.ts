@@ -4,7 +4,7 @@ import { atom } from "recoil";
 
 const filterAtom = atom<IFilter>({
     key: "search.filter",
-    default: { deposit: depositLimit, monthly: monthlyLimit },
+    default: { deposit: depositLimit, cost: monthlyLimit },
 });
 
 export { filterAtom };
