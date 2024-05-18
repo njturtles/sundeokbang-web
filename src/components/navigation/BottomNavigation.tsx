@@ -4,14 +4,16 @@ import CommonButton from "../button/CommonButton";
 import CallIcon from "@/assets/icons/call-icon.svg";
 import StarIcon from "@/assets/icons/star-icon.svg";
 
-const BottomNavigation = () => {
+const BottomNavigation = ({ tel }: { tel?: string }) => {
+    const telHref = () =>
+        tel ? (document.location.href = `tel:${tel}`) : null;
     return (
         <Container>
             <CommonButton type="secondary">
                 <StarIcon />
                 즐겨찾기
             </CommonButton>
-            <CommonButton type="primary">
+            <CommonButton type="primary" onClick={() => telHref}>
                 <CallIcon />
                 연락하기
             </CommonButton>
