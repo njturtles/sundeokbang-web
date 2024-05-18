@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
 import TopNavigation from "@/components/navigation/TopNavigation";
 
-const apiKey = process.env.NEXT_PUBLIC_NAVER_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
 
 const Map = () => {
     const mapRef = useRef<NaverMap | null>(null);

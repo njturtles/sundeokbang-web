@@ -1,24 +1,50 @@
 import React from "react";
 import styled from "@emotion/styled";
 import BackButton from "../button/BackButton";
-import ImageIndicator from "../indicator/ImageIndicator";
+// import ImageIndicator from "../indicator/ImageIndicator";
+// import Image from "next/image";
 
-const TopSection = () => {
+type Props = {
+    images: string[];
+    clickEvent: () => void;
+};
+
+const TopSection = ({ images, clickEvent }: Props) => {
     return (
         <TopContainer>
             <BackButton
                 type="default"
                 style={{ position: "absolute", top: "70px", left: "20px" }}
             />
-            <ImageIndicator
+            {/* <Image
+                alt="방 썸네일"
+                src={images[0]}
+                width={100}
+                height={100}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            /> */}
+            <Thumbnail
+                onClick={clickEvent}
+                alt="방 썸네일"
+                src={images[0]}
+                width={100}
+                height={100}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    cursor: "pointer",
+                }}
+            />
+            {/* <ImageIndicator
                 current={1}
-                max={5}
+                max={images.length}
                 style={{
                     position: "absolute",
                     bottom: "20px",
                     right: "20px",
                 }}
-            />
+            /> */}
         </TopContainer>
     );
 };
@@ -28,6 +54,12 @@ const TopContainer = styled.section`
     width: 100%;
     height: 300px;
     background-color: #ccc;
+`;
+
+const Thumbnail = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 export default TopSection;

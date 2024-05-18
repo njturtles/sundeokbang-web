@@ -3,17 +3,21 @@ import styled from "@emotion/styled";
 
 type Props = {
     title: string;
+    content: string;
 };
 
-const DetailSection = ({ title }: Props) => {
+const DetailSection = ({ title, content }: Props) => {
+    const paras = content.includes("\n") ? content.split("\n") : content;
     return (
         <Container>
             <Title>{title}</Title>
-            <Paragraphs>
-                <Paragraph>ㅁㄴㅇㄹ</Paragraph>
-                <Paragraph>ㅁㄴㅇㄹ</Paragraph>
-                <Paragraph>ㅁㄴㅇㄹ</Paragraph>
-            </Paragraphs>
+            <Content>
+                {typeof paras === "string" && <Paragraph>{content}</Paragraph>}
+                {typeof paras === "object" &&
+                    paras.map((para, index) => (
+                        <Paragraph key={index}>{para}</Paragraph>
+                    ))}
+            </Content>
         </Container>
     );
 };
@@ -38,7 +42,7 @@ const Title = styled.h1`
     color: ${({ theme }) => theme.color.black.hue0};
 `;
 
-const Paragraphs = styled.ul`
+const Content = styled.ul`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
