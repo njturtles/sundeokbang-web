@@ -10,7 +10,7 @@ import { depositLimit, monthlyLimit } from "@/constants/filter";
 
 interface LocalValue {
     deposit: number[];
-    monthly: number[];
+    cost: number[];
 }
 
 const FilterDetail = () => {
@@ -18,7 +18,7 @@ const FilterDetail = () => {
     const [filter, setFilter] = useRecoilState(filterAtom);
     const [localValue, setLocalValue] = useState<LocalValue>({
         deposit: filter.deposit,
-        monthly: filter.monthly,
+        cost: filter.cost,
     });
 
     const applyHandler = () => {
@@ -27,8 +27,8 @@ const FilterDetail = () => {
     };
 
     const resetHandler = () => {
-        setLocalValue({ deposit: depositLimit, monthly: monthlyLimit });
-        setFilter({ deposit: depositLimit, monthly: monthlyLimit });
+        setLocalValue({ deposit: depositLimit, cost: monthlyLimit });
+        setFilter({ deposit: depositLimit, cost: monthlyLimit });
         setOverlay(false);
     };
 
@@ -57,13 +57,11 @@ const FilterDetail = () => {
                     }
                 />
             </DepositContainer>
-            <MonthlyContainer>
+            <CostContainer>
                 <Title>월세</Title>
-                <Monthly>
-                    {formatToWon(localValue.monthly, monthlyLimit)}
-                </Monthly>
+                <Cost>{formatToWon(localValue.cost, monthlyLimit)}</Cost>
                 <Slider
-                    defaultValue={localValue.monthly}
+                    defaultValue={localValue.cost}
                     min={monthlyLimit[0]}
                     max={monthlyLimit[1]}
                     step={10}
@@ -71,7 +69,7 @@ const FilterDetail = () => {
                         setLocalValue((prev) => ({ ...prev, monthly: e }))
                     }
                 />
-            </MonthlyContainer>
+            </CostContainer>
             <ButtonContainer>
                 <ApplyButton onClick={applyHandler}>적용</ApplyButton>
                 <ResetButton onClick={resetHandler}>초기화</ResetButton>
@@ -86,7 +84,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 48px;
+    gap: 36px;
     width: 100%;
     height: 500px;
     padding: 25px 20px;
@@ -135,8 +133,8 @@ const Deposit = styled.span`
     margin-bottom: 16px;
 `;
 
-const MonthlyContainer = styled(DepositContainer)``;
-const Monthly = styled(Deposit)``;
+const CostContainer = styled(DepositContainer)``;
+const Cost = styled(Deposit)``;
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -146,6 +144,7 @@ const ButtonContainer = styled.div`
     gap: 16px;
     width: 100%;
     height: auto;
+    padding-top: 32px;
 `;
 
 const ApplyButton = styled.button`
