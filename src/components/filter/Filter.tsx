@@ -23,13 +23,13 @@ const Filter = () => {
             </FilterButton>
             <FilterButton
                 selected={
-                    filterValue.monthly[0] === monthlyLimit[0] &&
-                    filterValue.monthly[1] === monthlyLimit[1]
+                    filterValue.cost[0] === monthlyLimit[0] &&
+                    filterValue.cost[1] === monthlyLimit[1]
                         ? false
                         : true
                 }
             >
-                월세{`: ${formatToWon(filterValue.monthly, monthlyLimit)}`}
+                월세{`: ${formatToWon(filterValue.cost, monthlyLimit)}`}
             </FilterButton>
         </Container>
     );
