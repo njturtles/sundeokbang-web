@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import DefaultLayout from "@/layout/DefaultLayout";
 import TopSection from "@/components/detail/TopSection";
@@ -36,10 +36,6 @@ const Detail = () => {
                     return data;
                 }),
     });
-
-    useEffect(() => {
-        console.log(olVisible);
-    }, [olVisible]);
 
     const staticMapURI = useStaticMapURI({
         apiKey: apiKey,
