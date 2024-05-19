@@ -10,7 +10,7 @@ import { depositLimit, monthlyLimit } from "@/constants/filter";
 
 interface LocalValue {
     deposit: number[];
-    monthly: number[];
+    cost: number[];
 }
 
 const FilterDetail = () => {
@@ -18,7 +18,7 @@ const FilterDetail = () => {
     const [filter, setFilter] = useRecoilState(filterAtom);
     const [localValue, setLocalValue] = useState<LocalValue>({
         deposit: filter.deposit,
-        monthly: filter.monthly,
+        cost: filter.cost,
     });
 
     const applyHandler = () => {
@@ -27,8 +27,8 @@ const FilterDetail = () => {
     };
 
     const resetHandler = () => {
-        setLocalValue({ deposit: depositLimit, monthly: monthlyLimit });
-        setFilter({ deposit: depositLimit, monthly: monthlyLimit });
+        setLocalValue({ deposit: depositLimit, cost: monthlyLimit });
+        setFilter({ deposit: depositLimit, cost: monthlyLimit });
         setOverlay(false);
     };
 
@@ -59,11 +59,9 @@ const FilterDetail = () => {
             </DepositContainer>
             <MonthlyContainer>
                 <Title>월세</Title>
-                <Monthly>
-                    {formatToWon(localValue.monthly, monthlyLimit)}
-                </Monthly>
+                <Monthly>{formatToWon(localValue.cost, monthlyLimit)}</Monthly>
                 <Slider
-                    defaultValue={localValue.monthly}
+                    defaultValue={localValue.cost}
                     min={monthlyLimit[0]}
                     max={monthlyLimit[1]}
                     step={10}
