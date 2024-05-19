@@ -52,6 +52,7 @@ const Container = styled.li`
     background-color: ${({ theme }) => theme.color.white.hue0};
     box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.15);
     cursor: pointer;
+    flex-shrink: 0;
 `;
 
 const ItemImage = styled.img`
