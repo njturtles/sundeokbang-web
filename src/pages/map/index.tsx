@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
 import { MapOptions, NaverMap } from "@/types/navermaps";
@@ -6,10 +6,12 @@ import { AllItemList, CurrentLocation } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
 import TopNavigation from "@/components/navigation/TopNavigation";
+import MapMarker from "@/components/map/MapMarker";
 
 const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
 
 const Map = () => {
+    const [mount, setMount] = useState<boolean>(false);
     const mapRef = useRef<NaverMap | null>(null);
 
     const initializeMap = () => {
@@ -19,6 +21,7 @@ const Map = () => {
 
         const map = new window.naver.maps.Map("map", mapOptions);
         mapRef.current = map;
+        setMount(true);
     };
 
     const moveToCurrentPos = () => {
@@ -43,18 +46,34 @@ const Map = () => {
                     <ButtonContainer>
                         <CurrentLocation onClick={() => moveToCurrentPos()} />
                     </ButtonContainer>
-                    <div
-                        id="map"
-                        style={{ width: "100%", height: "100%" }}
-                    ></div>
+                    <div id="map" style={{ width: "100%", height: "100%" }}>
+                        {mount && mapRef.current && (
+                            <MapMarker
+                                mapRef={mapRef.current || null}
+                                pos={{ lat: 37.3595704, lng: 127.105399 }}
+                            />
+                        )}
+                    </div>
                 </MapContainer>
                 <BottomContainer>
                     <AllItemList />
-                    <Card
-                        title="방 이름"
-                        location="주소"
-                        label={{ deposit: "1000만원", monthly: "1000원" }}
-                    />
+                    <CardContainer>
+                        <Card
+                            title="방 이름"
+                            location="주소"
+                            label={{ deposit: "1000만원", monthly: "1000원" }}
+                        />
+                        <Card
+                            title="방 이름"
+                            location="주소"
+                            label={{ deposit: "1000만원", monthly: "1000원" }}
+                        />
+                        <Card
+                            title="방 이름"
+                            location="주소"
+                            label={{ deposit: "1000만원", monthly: "1000원" }}
+                        />
+                    </CardContainer>
                 </BottomContainer>
             </MapLayout>
         </>
@@ -83,6 +102,22 @@ const BottomContainer = styled.div`
     height: auto;
     margin: 0 auto;
     padding: 32px 10px;
+`;
+
+const CardContainer = styled.ul`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    height: auto;
+    padding-left: 40px;
+    padding-right: 20px;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const MapContainer = styled.main`
