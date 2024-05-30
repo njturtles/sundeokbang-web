@@ -9,7 +9,7 @@ type Props = {
     location: string;
     label: {
         deposit: string;
-        monthly: string;
+        cost: string;
     };
 };
 
@@ -26,8 +26,8 @@ const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
                     </Location>
                 </TitleContainer>
                 <LabelContainer>
-                    <Label>{label.deposit}</Label>
-                    <Label>{label.monthly}</Label>
+                    <Label>보증금 {label.deposit}원</Label>
+                    <Label>월세 {label.cost}원</Label>
                 </LabelContainer>
             </InfoContainer>
         </Container>
