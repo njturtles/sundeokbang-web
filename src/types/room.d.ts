@@ -21,7 +21,7 @@ export interface RoomDataType {
     owner: string;
     latitude: number;
     longitude: number;
-    imageurl: string[];
+    imageUrls: string[];
     createdAt: string;
     updatedAt: string;
     distance?: number;

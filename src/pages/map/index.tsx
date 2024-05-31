@@ -40,6 +40,10 @@ const Map = () => {
         if (filter.deposit && filter.cost) refetch();
     }, [filter]);
 
+    useEffect(() => {
+        console.log(detail);
+    }, [detail]);
+
     const initializeMap = () => {
         const mapOptions: MapOptions = {
             center: new window.naver.maps.LatLng(37.3595704, 127.105399),
@@ -79,44 +83,40 @@ const Map = () => {
                                 id="map"
                                 style={{ width: "100%", height: "100%" }}
                             >
-                                {mount && mapRef.current && (
-                                    <MapMarker
-                                        mapRef={mapRef.current || null}
-                                        pos={{
-                                            lat: 37.3595704,
-                                            lng: 127.105399,
-                                        }}
-                                    />
-                                )}
+                                {mount &&
+                                    mapRef.current &&
+                                    rooms &&
+                                    rooms.map((room) => (
+                                        <MapMarker
+                                            title={room.name}
+                                            key={room._id}
+                                            onClick={() => setDetail(room)}
+                                            mapRef={mapRef.current || null}
+                                            pos={{
+                                                lat: room.latitude,
+                                                lng: room.longitude,
+                                            }}
+                                        />
+                                    ))}
                             </div>
                         </MapContainer>
                         <BottomContainer>
                             <AllItemList onClick={() => setIsMapView(false)} />
                             <CardContainer>
-                                <Card
-                                    title="방 이름"
-                                    location="주소"
-                                    label={{
-                                        deposit: "1000만원",
-                                        monthly: "1000원",
-                                    }}
-                                />
-                                <Card
-                                    title="방 이름"
-                                    location="주소"
-                                    label={{
-                                        deposit: "1000만원",
-                                        monthly: "1000원",
-                                    }}
-                                />
-                                <Card
-                                    title="방 이름"
-                                    location="주소"
-                                    label={{
-                                        deposit: "1000만원",
-                                        monthly: "1000원",
-                                    }}
-                                />
+                                {detail && (
+                                    <Card
+                                        onClick={() =>
+                                            router.push(`/detail/${detail._id}`)
+                                        }
+                                        title={detail.name}
+                                        location={detail.address}
+                                        label={{
+                                            deposit: `${detail.deposit}만원`,
+                                            cost: `${detail.cost}만원`,
+                                        }}
+                                        imgSrc={detail.imageUrls[0]}
+                                    />
+                                )}
                             </CardContainer>
                         </BottomContainer>
                     </>
@@ -151,6 +151,7 @@ const Map = () => {
                                                 ),
                                             ),
                                         }}
+                                        imgSrc={room.imageUrls[0]}
                                     />
                                 ))}
                         </ListContainer>
@@ -183,6 +184,7 @@ const BottomContainer = styled.div`
     height: auto;
     margin: 0 auto;
     padding: 32px 10px;
+    padding-top: 0;
 `;
 
 const CardContainer = styled.ul`

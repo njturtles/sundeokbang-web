@@ -9,7 +9,7 @@ type Props = {
     location: string;
     label: {
         deposit: string;
-        monthly: string;
+        cost: string;
     };
 };
 
@@ -31,7 +31,7 @@ const Card = ({ onClick, imgSrc, title, location, label }: Props) => {
                     </Label>
                     <Label>
                         <b>월세 </b>
-                        {label.monthly}
+                        {label.cost}
                     </Label>
                 </LabelContainer>
             </Information>

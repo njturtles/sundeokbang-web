@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import ArrowIcon from "@/assets/icons/back-button.svg";
 import CloseIcon from "@/assets/icons/close-icon.svg";
+import Image from "next/image";
 
 type Props = {
     images: string[];
@@ -39,7 +40,12 @@ const ImageDetail = ({ images, closeEvent }: Props) => {
                         <ArrowIcon />
                     </NextButton>
                 </ButtonContainer>
-                <Image src={images[current]} />
+                <Image
+                    alt="방 이미지"
+                    fill={true}
+                    src={images[current]}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
             </ImageContainer>
         </Container>
     );
@@ -83,13 +89,13 @@ const ButtonContainer = styled.div`
     z-index: 999;
 `;
 
-const Image = styled.img`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
-`;
+// const Image = styled.img`
+//     position: absolute;
+//     width: 100%;
+//     height: 100%;
+//     border-radius: 12px;
+//     box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
+// `;
 
 const PrevButton = styled.button`
     width: auto;

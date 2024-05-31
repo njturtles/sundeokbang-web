@@ -54,12 +54,12 @@ const Detail = () => {
                 <DefaultLayout>
                     {olVisible && (
                         <ImageDetail
-                            images={data?.result.imageurl || []}
+                            images={data?.result.imageUrls || []}
                             closeEvent={() => setOlVisible(false)}
                         />
                     )}
                     <TopSection
-                        images={data?.result.imageurl || []}
+                        images={data?.result.imageUrls || []}
                         clickEvent={() => setOlVisible(true)}
                     />
                     <MainContainer>
