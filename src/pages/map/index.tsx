@@ -138,7 +138,7 @@ const Map = () => {
                                         }
                                         key={room.name}
                                         title={room.name}
-                                        location=""
+                                        location={room.address}
                                         label={{
                                             deposit: String(
                                                 room.deposit.toLocaleString(
