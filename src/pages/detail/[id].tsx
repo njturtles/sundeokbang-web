@@ -75,14 +75,14 @@ const Detail = () => {
                                     content:
                                         data?.result.deposit.toLocaleString(
                                             "ko-KR",
-                                        ) + "원",
+                                        ) + "만원",
                                 },
                                 {
                                     title: "월세",
                                     content:
                                         data?.result.cost.toLocaleString(
                                             "ko-KR",
-                                        ) + "원",
+                                        ) + "만원",
                                 },
                                 {
                                     title: "관리비",

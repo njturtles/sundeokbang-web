@@ -11,25 +11,34 @@ import { RoomDataType } from "@/types/room";
 import ListCard from "@/components/card/ListCard";
 import { useRecoilValue } from "recoil";
 import { schoolIdAtom } from "@/stores/schoolId";
-import { mockApi } from "@/apis/mock";
 import useRoomList from "@/queries/useRoomList";
 import { filterAtom } from "@/stores/filter";
+import { useRouter } from "next/router";
 
 const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
 
 const Map = () => {
+    const router = useRouter();
     const [rooms, setRooms] = useState<RoomDataType[] | null>(null);
     const [detail, setDetail] = useState<RoomDataType | null>(null);
-    const filter = useRecoilValue(filterAtom);
     const [isMapView, setIsMapView] = useState<boolean>(true);
     const [mount, setMount] = useState<boolean>(false);
     const schoolId = useRecoilValue(schoolIdAtom);
-    const { data, isFetched, isSuccess } = useRoomList(schoolId);
+    const filter = useRecoilValue(filterAtom);
+    const { data, isFetched, refetch } = useRoomList(
+        schoolId,
+        filter.deposit,
+        filter.cost,
+    );
     const mapRef = useRef<NaverMap | null>(null);
 
     useEffect(() => {
-        isFetched && isSuccess && setRooms(data?.data.result);
+        data && setRooms(data.data.result);
     }, [isFetched]);
+
+    useEffect(() => {
+        if (filter.deposit && filter.cost) refetch();
+    }, [filter]);
 
     const initializeMap = () => {
         const mapOptions: MapOptions = {
@@ -116,9 +125,17 @@ const Map = () => {
                     <>
                         <TopNavigation onBack={() => setIsMapView(true)} />
                         <ListContainer>
+                            {!rooms && (
+                                <NoItems>
+                                    설정한 조건의 매물이 없습니다.
+                                </NoItems>
+                            )}
                             {rooms &&
                                 rooms?.map((room) => (
                                     <ListCard
+                                        onClick={() =>
+                                            router.push(`/detail/${room._id}`)
+                                        }
                                         key={room.name}
                                         title={room.name}
                                         location=""
@@ -198,6 +215,18 @@ const ListContainer = styled.ul`
     height: auto;
     padding-top: 20px;
     overflow-y: visible;
+`;
+
+const NoItems = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding-top: 100px;
+    font-size: 1.25rem;
+    color: ${({ theme }) => theme.color.gray.hue2};
 `;
 
 export default Map;

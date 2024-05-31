@@ -2,5 +2,5 @@ import { atom } from "recoil";
 
 export const schoolIdAtom = atom<string>({
     key: "schoolId",
-    default: "0",
+    default: "순천대학교",
 });

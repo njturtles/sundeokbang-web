@@ -26,8 +26,8 @@ const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
                     </Location>
                 </TitleContainer>
                 <LabelContainer>
-                    <Label>보증금 {label.deposit}원</Label>
-                    <Label>월세 {label.cost}원</Label>
+                    <Label>보증금 {label.deposit}만원</Label>
+                    <Label>월세 {label.cost}만원</Label>
                 </LabelContainer>
             </InfoContainer>
         </Container>
@@ -45,6 +45,7 @@ const Container = styled.li`
     padding: 20px 20px;
     border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue0};
     background-color: ${({ theme }) => theme.color.white.hue0};
+    cursor: pointer;
 `;
 
 const Thumbnail = styled.img`
