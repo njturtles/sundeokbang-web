@@ -35,6 +35,9 @@ const Container = styled.nav`
     border-top: 1px solid ${({ theme }) => theme.color.gray.hue1};
     background-color: ${({ theme }) => theme.color.white.hue0};
     z-index: 999;
+    & > button {
+        flex-grow: 1;
+    }
 `;
 
 export default BottomNavigation;
