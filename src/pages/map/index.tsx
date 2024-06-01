@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
 import { MapOptions, NaverMap } from "@/types/navermaps";
-import { AllItemList, CurrentLocation } from "@/components/button";
+import { AllItemList } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
 import TopNavigation from "@/components/navigation/TopNavigation";
@@ -54,13 +54,6 @@ const Map = () => {
         setMount(true);
     };
 
-    const moveToCurrentPos = () => {
-        if (mapRef.current) {
-            const curPos = new window.naver.maps.LatLng(37.3595704, 127.105399);
-            mapRef.current.morph(curPos, 16, { easing: "easeInCubic" });
-        }
-    };
-
     return (
         <>
             <MapLayout style={{ overflowY: isMapView ? "hidden" : undefined }}>
@@ -110,7 +103,7 @@ const Map = () => {
                                             cost: `${detail.cost}만원`,
                                         }}
                                         imgSrc={detail.imageUrls[0]}
-                                        closeEvent={(e) => setDetail(null)}
+                                        closeEvent={() => setDetail(null)}
                                     />
                                 )}
                             </CardContainer>
@@ -157,15 +150,6 @@ const Map = () => {
         </>
     );
 };
-
-const ButtonContainer = styled.div`
-    position: absolute;
-    width: auto;
-    height: auto;
-    right: 20px;
-    top: 238px;
-    z-index: 999;
-`;
 
 const BottomContainer = styled.div`
     position: absolute;

@@ -9,10 +9,7 @@ import DetailSection from "@/components/detail/DetailSection";
 import LocationSection from "@/components/detail/LocationSection";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import useStaticMapURI from "@/hooks/useStaticMapURI";
-import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
 import { mockApi } from "@/apis/mock";
-import { ResponseType } from "@/types/response";
 import ImageDetail from "@/components/detail/ImageDetail";
 import {
     GetServerSideProps,

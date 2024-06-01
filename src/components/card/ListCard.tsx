@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import MarkerIcon from "@/assets/icons/location-marker.svg";
 
 type Props = {
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
