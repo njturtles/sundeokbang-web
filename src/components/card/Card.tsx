@@ -1,29 +1,34 @@
 import React from "react";
 import styled from "@emotion/styled";
-import MarkerIcon from "@/assets/icons/location-marker.svg";
 
 type Props = {
-    onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
+    onClick?: () => void;
     imgSrc?: string;
     title: string;
     location: string;
     label: {
         deposit: string;
-        monthly: string;
+        cost: string;
     };
+    closeEvent: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Card = ({ onClick, imgSrc, title, location, label }: Props) => {
+const Card = ({
+    onClick,
+    imgSrc,
+    title,
+    location,
+    label,
+    closeEvent,
+}: Props) => {
     return (
-        <Container onClick={onClick}>
-            <ItemImage src={imgSrc} />
-            <Information>
+        <Container>
+            <CloseButton onClick={closeEvent}></CloseButton>
+            <ItemImage src={imgSrc} onClick={onClick} />
+            <Information onClick={onClick}>
                 <div>
                     <ItemTitle>{title}</ItemTitle>
-                    <ItemLocation>
-                        <MarkerIcon />
-                        {location}
-                    </ItemLocation>
+                    <ItemLocation>{location}</ItemLocation>
                 </div>
                 <LabelContainer>
                     <Label>
@@ -31,7 +36,7 @@ const Card = ({ onClick, imgSrc, title, location, label }: Props) => {
                     </Label>
                     <Label>
                         <b>월세 </b>
-                        {label.monthly}
+                        {label.cost}
                     </Label>
                 </LabelContainer>
             </Information>
@@ -40,13 +45,14 @@ const Card = ({ onClick, imgSrc, title, location, label }: Props) => {
 };
 
 const Container = styled.li`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
     width: 360px;
-    height: 160px;
+    height: 180px;
     padding: 20px;
     border-radius: 16px;
     background-color: ${({ theme }) => theme.color.white.hue0};
@@ -70,6 +76,7 @@ const Information = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
+    gap: 12px;
     width: 100%;
     height: 100%;
     padding: 0px 10px;
@@ -88,6 +95,7 @@ const ItemLocation = styled.span`
     align-items: center;
     justify-content: flex-start;
     gap: 4px;
+    line-height: 1rem;
     font-size: 0.75rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.medium};
     color: ${({ theme }) => theme.color.gray.hue3};
@@ -111,6 +119,26 @@ const Label = styled.li`
     background-color: ${({ theme }) => theme.color.white.hue3};
     font-size: 0.75rem;
     color: ${({ theme }) => theme.color.black.hue2};
+`;
+
+const CloseButton = styled.button`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    outline: none;
+    z-index: 99;
+    &:before {
+        content: "✕";
+        font-size: 1.25rem;
+        color: ${({ theme }) => theme.color.black.hue0};
+    }
 `;
 
 export default Card;

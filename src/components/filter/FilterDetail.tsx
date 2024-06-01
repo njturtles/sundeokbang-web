@@ -66,7 +66,7 @@ const FilterDetail = () => {
                     max={monthlyLimit[1]}
                     step={10}
                     onInput={(e: number[]) =>
-                        setLocalValue((prev) => ({ ...prev, monthly: e }))
+                        setLocalValue((prev) => ({ ...prev, cost: e }))
                     }
                 />
             </CostContainer>

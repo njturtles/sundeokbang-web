@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import ArrowIcon from "@/assets/icons/back-button.svg";
 import CloseIcon from "@/assets/icons/close-icon.svg";
+import Image from "next/image";
+import { ThreeDots } from "react-loader-spinner";
 
 type Props = {
     images: string[];
@@ -10,6 +12,7 @@ type Props = {
 
 const ImageDetail = ({ images, closeEvent }: Props) => {
     const [current, setCurrent] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(true);
     return (
         <Container>
             <ImageContainer>
@@ -39,7 +42,17 @@ const ImageDetail = ({ images, closeEvent }: Props) => {
                         <ArrowIcon />
                     </NextButton>
                 </ButtonContainer>
-                <Image src={images[current]} />
+                <OptimizedImgContainer>
+                    {loading && <ThreeDots width="80" height="80" />}
+                    <OptimizedImg
+                        alt="방 이미지"
+                        fill={true}
+                        src={images[current]}
+                        // loading="lazy"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        onLoad={() => setLoading(false)}
+                    />
+                </OptimizedImgContainer>
             </ImageContainer>
         </Container>
     );
@@ -83,12 +96,19 @@ const ButtonContainer = styled.div`
     z-index: 999;
 `;
 
-const Image = styled.img`
-    position: absolute;
+const OptimizedImgContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const OptimizedImg = styled(Image)`
     width: 100%;
     height: 100%;
     border-radius: 12px;
     box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
+    background: white;
 `;
 
 const PrevButton = styled.button`

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import MarkerIcon from "@/assets/icons/location-marker.svg";
 
 type Props = {
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
@@ -9,7 +8,7 @@ type Props = {
     location: string;
     label: {
         deposit: string;
-        monthly: string;
+        cost: string;
     };
 };
 
@@ -21,13 +20,16 @@ const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
                 <TitleContainer>
                     <ItemTitle>{title}</ItemTitle>
                     <Location>
-                        <MarkerIcon />
-                        {location}
+                        <p>{location}</p>
                     </Location>
                 </TitleContainer>
                 <LabelContainer>
-                    <Label>{label.deposit}</Label>
-                    <Label>{label.monthly}</Label>
+                    <Label>
+                        <b>보증금</b> {label.deposit}만원
+                    </Label>
+                    <Label>
+                        <b>월세</b> {label.cost}만원
+                    </Label>
                 </LabelContainer>
             </InfoContainer>
         </Container>
@@ -41,18 +43,21 @@ const Container = styled.li`
     justify-content: space-evenly;
     gap: 20px;
     width: 100%;
-    height: 180px;
+    min-height: 180px;
     padding: 20px 20px;
     border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue0};
     background-color: ${({ theme }) => theme.color.white.hue0};
+    cursor: pointer;
 `;
 
 const Thumbnail = styled.img`
-    width: 144px;
-    height: 144px;
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 144px;
+    max-height: 144px;
     border-radius: 10px;
     background-color: ${({ theme }) => theme.color.gray.hue0};
-    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
 `;
 
 const InfoContainer = styled.div`
@@ -60,7 +65,7 @@ const InfoContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
+    gap: 16px;
     width: 100%;
     height: 100%;
     padding: 10px 0;
@@ -71,13 +76,13 @@ const TitleContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 12px;
     width: 100%;
     height: 100%;
 `;
 
 const ItemTitle = styled.h1`
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.bold};
     color: ${({ theme }) => theme.color.black.hue0};
 `;
@@ -85,12 +90,14 @@ const ItemTitle = styled.h1`
 const Location = styled.span`
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: flex-start;
-    gap: 4px;
-    font-size: 0.9rem;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    line-height: 1.25rem;
+    font-size: 1rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.regular};
-    color: ${({ theme }) => theme.color.gray.hue3};
+    color: ${({ theme }) => theme.color.black.hue2};
 `;
 
 const LabelContainer = styled.ul`
@@ -109,8 +116,8 @@ const Label = styled.li`
     padding: 6px 8px;
     border-radius: 6px;
     background-color: ${({ theme }) => theme.color.white.hue3};
-    font-size: 0.75rem;
-    color: ${({ theme }) => theme.color.black.hue2};
+    font-size: 0.8rem;
+    color: ${({ theme }) => theme.color.black.hue1};
 `;
 
 export default ListCard;

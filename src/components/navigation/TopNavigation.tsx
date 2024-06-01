@@ -3,7 +3,11 @@ import styled from "@emotion/styled";
 import Filter from "../filter/Filter";
 import BackButton from "../button/BackButton";
 
-const TopNavigation = () => {
+type Props = {
+    onBack: () => void;
+};
+
+const TopNavigation = ({ onBack }: Props) => {
     return (
         <Container>
             <div
@@ -15,7 +19,7 @@ const TopNavigation = () => {
                     gap: "16px",
                 }}
             >
-                <BackButton type="map" />
+                <BackButton type="map" onClick={onBack} />
                 <LocationTitle>순천대학교</LocationTitle>
             </div>
             <Filter />

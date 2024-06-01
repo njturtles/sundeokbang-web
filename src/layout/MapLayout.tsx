@@ -1,10 +1,16 @@
-import React, { useRef } from "react";
+import React, { CSSProperties, useRef } from "react";
 import styled from "@emotion/styled";
 import { FilterDetail } from "@/components/filter";
 import { useRecoilState } from "recoil";
 import { overlayAtom } from "@/stores/overlay";
 
-const MapLayout = ({ children }: { children: React.ReactNode }) => {
+const MapLayout = ({
+    children,
+    style,
+}: {
+    children: React.ReactNode;
+    style: CSSProperties;
+}) => {
     const [overlay, setOverlay] = useRecoilState(overlayAtom);
     const overlayRef = useRef<HTMLDivElement | null>(null);
 
@@ -13,7 +19,7 @@ const MapLayout = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <Container onClick={overlayClickHandler}>
+        <Container onClick={overlayClickHandler} style={{ ...style }}>
             {overlay && (
                 <Overlay ref={overlayRef}>
                     <FilterDetail />
@@ -30,7 +36,6 @@ const Container = styled.div`
     height: 100vh;
     margin: 0 auto;
     background: white;
-    overflow: hidden;
 `;
 
 const Overlay = styled.div`
