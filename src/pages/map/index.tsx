@@ -25,7 +25,7 @@ const Map = () => {
     const [mount, setMount] = useState<boolean>(false);
     const schoolId = useRecoilValue(schoolIdAtom);
     const filter = useRecoilValue(filterAtom);
-    const { data, isFetched, refetch } = useRoomList(
+    const { data, refetch } = useRoomList(
         schoolId,
         filter.deposit,
         filter.cost,
@@ -34,19 +34,19 @@ const Map = () => {
 
     useEffect(() => {
         data && setRooms(data.data.result);
-    }, [isFetched]);
+    }, [data]);
 
     useEffect(() => {
-        if (filter.deposit && filter.cost) refetch();
+        if (filter.deposit && filter.cost) {
+            refetch();
+            setDetail(null);
+        }
+        console.log(filter);
     }, [filter]);
-
-    useEffect(() => {
-        console.log(detail);
-    }, [detail]);
 
     const initializeMap = () => {
         const mapOptions: MapOptions = {
-            center: new window.naver.maps.LatLng(37.3595704, 127.105399),
+            center: new window.naver.maps.LatLng(34.968416, 127.014755),
         };
 
         const map = new window.naver.maps.Map("map", mapOptions);
@@ -74,11 +74,6 @@ const Map = () => {
                             onReady={initializeMap}
                         />
                         <MapContainer>
-                            <ButtonContainer>
-                                <CurrentLocation
-                                    onClick={() => moveToCurrentPos()}
-                                />
-                            </ButtonContainer>
                             <div
                                 id="map"
                                 style={{ width: "100%", height: "100%" }}
@@ -115,6 +110,7 @@ const Map = () => {
                                             cost: `${detail.cost}만원`,
                                         }}
                                         imgSrc={detail.imageUrls[0]}
+                                        closeEvent={(e) => setDetail(null)}
                                     />
                                 )}
                             </CardContainer>
@@ -190,17 +186,11 @@ const BottomContainer = styled.div`
 const CardContainer = styled.ul`
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     gap: 12px;
     width: 100%;
     height: auto;
-    padding-left: 40px;
-    padding-right: 20px;
-    overflow-x: scroll;
-    &::-webkit-scrollbar {
-        display: none;
-    }
 `;
 
 const MapContainer = styled.main`
