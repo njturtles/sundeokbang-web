@@ -20,7 +20,6 @@ const Container = styled.button<{ $type: Props["type"] }>`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
     gap: 8px;
     min-width: 120px;
     height: 50px;
