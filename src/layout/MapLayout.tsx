@@ -9,7 +9,7 @@ const MapLayout = ({
     style,
 }: {
     children: React.ReactNode;
-    style: CSSProperties;
+    style?: CSSProperties;
 }) => {
     const [overlay, setOverlay] = useRecoilState(overlayAtom);
     const overlayRef = useRef<HTMLDivElement | null>(null);
