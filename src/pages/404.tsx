@@ -7,8 +7,16 @@ const NotFoundPage = () => {
     return (
         <Container>
             <LogoImage />
-            <Title>요청하신 페이지를 찾을 수 없습니다.</Title>
-            <CommonButton type="primary">홈으로 돌아가기</CommonButton>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "24px",
+                }}
+            >
+                <Title>요청하신 페이지를 찾을 수 없습니다.</Title>
+                <CommonButton type="primary">홈으로 돌아가기</CommonButton>
+            </div>
         </Container>
     );
 };
@@ -16,20 +24,19 @@ const NotFoundPage = () => {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    gap: 24px;
+    gap: 80px;
     width: 500px;
-    height: 300px;
+    height: 100vh;
     margin: 0 auto;
-    padding-top: 80px;
+    padding: 0 40px;
     font-size: 1.25rem;
 `;
 
 const Title = styled.h1`
-    padding-top: 60px;
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 600;
     color: ${({ theme }) => theme.color.black.hue2};
 `;
 
