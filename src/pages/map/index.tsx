@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
-import { MapOptions, NaverMap } from "@/types/navermaps";
+import { ImageIcon, MapOptions, Marker, NaverMap } from "@/types/navermaps";
 import { AllItemList } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
 import TopNavigation from "@/components/navigation/TopNavigation";
-import MapMarker from "@/components/map/MapMarker";
 import { RoomDataType } from "@/types/room";
 import ListCard from "@/components/card/ListCard";
 import { useRecoilValue } from "recoil";
@@ -19,7 +18,7 @@ const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
 
 const Map = () => {
     const router = useRouter();
-    const [rooms, setRooms] = useState<RoomDataType[] | null>(null);
+    const [markers, setMarkers] = useState<Marker[]>([]);
     const [detail, setDetail] = useState<RoomDataType | null>(null);
     const [isMapView, setIsMapView] = useState<boolean>(true);
     const [mount, setMount] = useState<boolean>(false);
@@ -33,20 +32,44 @@ const Map = () => {
     const mapRef = useRef<NaverMap | null>(null);
 
     useEffect(() => {
-        data && setRooms(data.data.result);
-    }, [data]);
-
-    useEffect(() => {
         if (filter.deposit && filter.cost) {
             refetch();
             setDetail(null);
         }
-        console.log(filter);
     }, [filter]);
+
+    useEffect(() => {
+        markers.forEach((marker) => marker.setMap(null)); // reset all markers
+        if (isMapView && data?.data.result && mount && mapRef.current) {
+            data.data.result.map((room: RoomDataType) => {
+                const markerIcon: ImageIcon = {
+                    url: "./assets/icons/marker-icon.svg",
+                    anchor: new naver.maps.Point(12, 24),
+                    size: new naver.maps.Size(24, 24),
+                };
+
+                const pos = new naver.maps.LatLng(
+                    room.latitude,
+                    room.longitude,
+                );
+
+                const marker = new naver.maps.Marker({
+                    position: pos,
+                    title: room.name,
+                    map: mapRef.current,
+                    icon: markerIcon,
+                });
+
+                setMarkers((prev) => [...prev, marker]);
+
+                marker.addListener("click", () => setDetail(room));
+            });
+        }
+    }, [data, isMapView]);
 
     const initializeMap = () => {
         const mapOptions: MapOptions = {
-            center: new window.naver.maps.LatLng(34.968416, 127.014755),
+            center: new window.naver.maps.LatLng(34.967338, 127.479688),
         };
 
         const map = new window.naver.maps.Map("map", mapOptions);
@@ -70,26 +93,11 @@ const Map = () => {
                             <div
                                 id="map"
                                 style={{ width: "100%", height: "100%" }}
-                            >
-                                {mount &&
-                                    mapRef.current &&
-                                    rooms &&
-                                    rooms.map((room) => (
-                                        <MapMarker
-                                            title={room.name}
-                                            key={room._id}
-                                            onClick={() => setDetail(room)}
-                                            mapRef={mapRef.current || null}
-                                            pos={{
-                                                lat: room.latitude,
-                                                lng: room.longitude,
-                                            }}
-                                        />
-                                    ))}
-                            </div>
+                            ></div>
                         </MapContainer>
                         <BottomContainer>
                             <AllItemList onClick={() => setIsMapView(false)} />
+
                             <CardContainer>
                                 {detail && (
                                     <Card
@@ -114,13 +122,13 @@ const Map = () => {
                     <>
                         <TopNavigation onBack={() => setIsMapView(true)} />
                         <ListContainer>
-                            {!rooms && (
+                            {!data?.data.result && (
                                 <NoItems>
                                     설정한 조건의 매물이 없습니다.
                                 </NoItems>
                             )}
-                            {rooms &&
-                                rooms?.map((room) => (
+                            {data?.data.result &&
+                                data.data.result.map((room: RoomDataType) => (
                                     <ListCard
                                         onClick={() =>
                                             router.push(`/detail/${room._id}`)
@@ -163,8 +171,7 @@ const BottomContainer = styled.div`
     width: min(480px, 100%);
     height: auto;
     margin: 0 auto;
-    padding: 32px 10px;
-    padding-top: 0;
+    padding: 16px;
 `;
 
 const CardContainer = styled.ul`
@@ -187,10 +194,11 @@ const ListContainer = styled.ul`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    gap: 16px;
     width: 100%;
-    height: auto;
-    padding-top: 20px;
+    min-height: 100%;
     overflow-y: visible;
+    background-color: ${({ theme }) => theme.color.white.hue2};
 `;
 
 const NoItems = styled.div`
