@@ -45,7 +45,6 @@ const Container = styled.li`
     width: 100%;
     min-height: 180px;
     padding: 20px 20px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue0};
     background-color: ${({ theme }) => theme.color.white.hue0};
     cursor: pointer;
 `;

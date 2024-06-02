@@ -24,9 +24,19 @@ const Card = ({
     return (
         <Container>
             <CloseButton onClick={closeEvent}></CloseButton>
-            <ItemImage src={imgSrc} onClick={onClick} />
+            {/* <ItemImage src={imgSrc} onClick={onClick} /> */}
             <Information onClick={onClick}>
-                <div>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        gap: "12px",
+                        width: "100%",
+                        marginBottom: "4px",
+                    }}
+                >
                     <ItemTitle>{title}</ItemTitle>
                     <ItemLocation>{location}</ItemLocation>
                 </div>
@@ -51,10 +61,10 @@ const Container = styled.li`
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
-    width: 360px;
-    height: 180px;
-    padding: 20px;
-    border-radius: 16px;
+    width: min(100%, 400px);
+    height: auto;
+    padding: 20px 10px;
+    border-radius: 12px;
     background-color: ${({ theme }) => theme.color.white.hue0};
     box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.15);
     cursor: pointer;
@@ -62,9 +72,8 @@ const Container = styled.li`
 `;
 
 const ItemImage = styled.img`
-    flex-shrink: 0;
-    width: 120px;
-    height: 120px;
+    width: 144px;
+    height: 144px;
     border: none;
     outline: none;
     border-radius: 6px;
@@ -75,8 +84,7 @@ const Information = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 0;
     width: 100%;
     height: 100%;
     padding: 0px 10px;
@@ -86,7 +94,6 @@ const ItemTitle = styled.h1`
     font-size: 1.25rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.bold};
     color: ${({ theme }) => theme.color.black.hue0};
-    margin-bottom: 8px;
 `;
 
 const ItemLocation = styled.span`
@@ -96,7 +103,7 @@ const ItemLocation = styled.span`
     justify-content: flex-start;
     gap: 4px;
     line-height: 1rem;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.medium};
     color: ${({ theme }) => theme.color.gray.hue3};
 `;
@@ -117,8 +124,8 @@ const Label = styled.li`
     padding: 6px 8px;
     border-radius: 6px;
     background-color: ${({ theme }) => theme.color.white.hue3};
-    font-size: 0.75rem;
-    color: ${({ theme }) => theme.color.black.hue2};
+    font-size: 0.8rem;
+    color: ${({ theme }) => theme.color.black.hue1};
 `;
 
 const CloseButton = styled.button`
