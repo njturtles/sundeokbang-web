@@ -24,7 +24,7 @@ const Card = ({
     return (
         <Container>
             <CloseButton onClick={closeEvent}></CloseButton>
-            {/* <ItemImage src={imgSrc} onClick={onClick} /> */}
+            {null && <ItemImage src={imgSrc} onClick={onClick} />}
             <Information onClick={onClick}>
                 <div
                     style={{
