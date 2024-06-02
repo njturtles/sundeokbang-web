@@ -1,15 +1,20 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import styled from "@emotion/styled";
 
 type Props = {
     type: "primary" | "secondary";
     children: React.ReactNode;
     onClick?: () => void;
+    style?: CSSProperties;
 };
 
-const CommonButton = ({ type, children, onClick }: Props) => {
+const CommonButton = ({ type, children, onClick, style }: Props) => {
     return (
-        <Container onClick={onClick || undefined} $type={type}>
+        <Container
+            onClick={onClick || undefined}
+            $type={type}
+            style={{ ...style }}
+        >
             {children}
         </Container>
     );
