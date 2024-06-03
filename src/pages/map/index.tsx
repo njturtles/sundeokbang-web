@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
-import { ImageIcon, MapOptions, Marker, NaverMap } from "@/types/navermaps";
+import { ImageIcon, MapOptions, NaverMap } from "@/types/navermaps";
 import { AllItemList } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
@@ -13,12 +13,16 @@ import { schoolIdAtom } from "@/stores/schoolId";
 import useRoomList from "@/queries/useRoomList";
 import { filterAtom } from "@/stores/filter";
 import { useRouter } from "next/router";
+import { markerCluster } from "@/utils/marker-cluster";
 
 const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
 
+interface ClusterType extends Partial<naver.maps.OverlayView> {
+    delMap(): void;
+}
+
 const Map = () => {
     const router = useRouter();
-    const [markers, setMarkers] = useState<Marker[]>([]);
     const [detail, setDetail] = useState<RoomDataType | null>(null);
     const [isMapView, setIsMapView] = useState<boolean>(true);
     const [mount, setMount] = useState<boolean>(false);
@@ -31,6 +35,8 @@ const Map = () => {
     );
     const mapRef = useRef<NaverMap | null>(null);
 
+    const [cluster, setCluster] = useState<ClusterType | null>(null);
+
     useEffect(() => {
         if (filter.deposit && filter.cost) {
             refetch();
@@ -39,31 +45,57 @@ const Map = () => {
     }, [filter]);
 
     useEffect(() => {
-        markers.forEach((marker) => marker.setMap(null)); // reset all markers
-        if (isMapView && data?.data.result && mount && mapRef.current) {
-            data.data.result.map((room: RoomDataType) => {
-                const markerIcon: ImageIcon = {
-                    url: "./assets/icons/marker-icon.svg",
-                    anchor: new naver.maps.Point(12, 24),
-                    size: new naver.maps.Size(24, 24),
-                };
+        if (cluster) {
+            cluster.delMap();
+            setCluster(null);
+        }
 
-                const pos = new naver.maps.LatLng(
-                    room.latitude,
-                    room.longitude,
-                );
+        if (isMapView && data?.data.result && mapRef.current) {
+            const htmlMarker1 = {
+                content:
+                    '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:1rem;font-weight:600;color:white;text-shadow: 0px 2px 2px rgba(0,0,0,0.3);text-align:center;font-weight:bold;background:url(./assets/icons/cluster-icon.png);background-size:contain;"></div>',
+                size: new naver.maps.Size(40, 40),
+                anchor: new naver.maps.Point(20, 20),
+            };
 
+            const MarkerClustering = markerCluster(window.naver);
+            const markerIcon: ImageIcon = {
+                url: "./assets/icons/marker-icon.svg",
+                anchor: new naver.maps.Point(12, 24),
+                size: new naver.maps.Size(24, 24),
+            };
+            const markers = data?.data.result.map((room) => {
                 const marker = new naver.maps.Marker({
-                    position: pos,
+                    position: new naver.maps.LatLng(
+                        room.latitude,
+                        room.longitude,
+                    ),
                     title: room.name,
-                    map: mapRef.current,
                     icon: markerIcon,
                 });
-
-                setMarkers((prev) => [...prev, marker]);
-
                 marker.addListener("click", () => setDetail(room));
+                return marker;
             });
+
+            const clusterObj = new MarkerClustering({
+                minClusterSize: 2,
+                maxZoom: 15,
+                map: mapRef.current,
+                markers: markers,
+                disableClickZoom: false,
+                gridSize: 120,
+                icons: [htmlMarker1],
+                indexGenerator: [10, 100, 200, 500, 1000],
+                stylingFunction: function (
+                    clusterMarker: NaverMap,
+                    count: string,
+                ) {
+                    clusterMarker
+                        .getElement()
+                        .querySelector("div:first-child").innerText = count;
+                },
+            });
+            setCluster(clusterObj);
         }
     }, [data, isMapView]);
 
@@ -84,7 +116,7 @@ const Map = () => {
                     <>
                         <TopNavigation onBack={() => undefined} />
                         <Script
-                            strategy="beforeInteractive"
+                            strategy="afterInteractive"
                             type="text/javascript"
                             src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}&callback=initMap`}
                             onReady={initializeMap}
@@ -96,8 +128,11 @@ const Map = () => {
                             ></div>
                         </MapContainer>
                         <BottomContainer>
-                            <AllItemList onClick={() => setIsMapView(false)} />
-
+                            {data?.data.result && (
+                                <AllItemList
+                                    onClick={() => setIsMapView(false)}
+                                />
+                            )}
                             <CardContainer>
                                 {detail && (
                                     <Card
