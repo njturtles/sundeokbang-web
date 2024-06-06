@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
 
 type Props = {
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
+    const formatter = useLocaleFormatter("ko-kr");
     return (
         <Container onClick={onClick || undefined}>
             <Thumbnail src={imgSrc || undefined} />
@@ -25,10 +27,12 @@ const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
                 </TitleContainer>
                 <LabelContainer>
                     <Label>
-                        <b>보증금</b> {label.deposit}만원
+                        <b>보증금</b> {formatter(Number(label.deposit) * 10000)}
+                        원
                     </Label>
                     <Label>
-                        <b>월세</b> {label.cost}만원
+                        <b>월세 </b>
+                        {formatter(Number(label.cost) * 10000)}원
                     </Label>
                 </LabelContainer>
             </InfoContainer>
@@ -46,6 +50,8 @@ const Container = styled.li`
     min-height: 180px;
     padding: 20px 20px;
     background-color: ${({ theme }) => theme.color.white.hue0};
+    border-top: 1px solid ${({ theme }) => theme.color.gray.hue1};
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue1};
     cursor: pointer;
 `;
 

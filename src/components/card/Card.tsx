@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
 
 type Props = {
     onClick?: () => void;
@@ -21,6 +22,7 @@ const Card = ({
     label,
     closeEvent,
 }: Props) => {
+    const formatter = useLocaleFormatter("ko-kr");
     return (
         <Container>
             <CloseButton onClick={closeEvent}></CloseButton>
@@ -42,11 +44,12 @@ const Card = ({
                 </div>
                 <LabelContainer>
                     <Label>
-                        <b>보증금</b> {label.deposit}
+                        <b>보증금 </b>
+                        {formatter(Number(label.deposit) * 10000)}원
                     </Label>
                     <Label>
                         <b>월세 </b>
-                        {label.cost}
+                        {formatter(Number(label.cost) * 10000)}원
                     </Label>
                 </LabelContainer>
             </Information>
@@ -66,7 +69,7 @@ const Container = styled.li`
     padding: 20px 10px;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.color.white.hue0};
-    box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 7px 13px -5px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     flex-shrink: 0;
 `;

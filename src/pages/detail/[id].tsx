@@ -16,6 +16,7 @@ import {
     GetServerSidePropsContext,
     InferGetServerSidePropsType,
 } from "next";
+import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
 
 const apiKey = `${process.env.NEXT_PUBLIC_NAVERMAP_API_KEY_STATIC}`;
 const apiSecret = `${process.env.NEXT_PUBLIC_NAVERMAP_API_SECRET_STATIC}`;
@@ -38,7 +39,7 @@ const Detail = ({
     data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const [olVisible, setOlVisible] = useState<boolean>(false);
-
+    const formatter = useLocaleFormatter("ko-kr");
     const staticMapURI = useStaticMapURI({
         apiKey: apiKey,
         center: {
@@ -75,22 +76,20 @@ const Detail = ({
                             {
                                 title: "보증금",
                                 content:
-                                    data?.result.deposit.toLocaleString(
-                                        "ko-KR",
-                                    ) + "만원",
+                                    formatter(data?.result.deposit * 10000) +
+                                    "만원",
                             },
                             {
                                 title: "월세",
                                 content:
-                                    data?.result.cost.toLocaleString("ko-KR") +
+                                    formatter(data?.result.cost * 10000) +
                                     "만원",
                             },
                             {
                                 title: "관리비",
                                 content:
-                                    data?.result.maintenanceCost.toLocaleString(
-                                        "ko-KR",
-                                    ) + "원",
+                                    formatter(data?.result.maintenanceCost) +
+                                    "원",
                             },
                             {
                                 title: "계약기간",

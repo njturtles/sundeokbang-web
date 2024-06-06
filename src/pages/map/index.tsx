@@ -142,8 +142,8 @@ const Map = () => {
                                         title={detail.name}
                                         location={detail.address}
                                         label={{
-                                            deposit: `${detail.deposit}만원`,
-                                            cost: `${detail.cost}만원`,
+                                            deposit: `${detail.deposit}`,
+                                            cost: `${detail.cost}`,
                                         }}
                                         imgSrc={detail.imageUrls[0]}
                                         closeEvent={() => setDetail(null)}
@@ -229,9 +229,10 @@ const ListContainer = styled.ul`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
     min-height: 100%;
+    padding-top: 12px;
     overflow-y: visible;
     background-color: ${({ theme }) => theme.color.white.hue2};
 `;
