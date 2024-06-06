@@ -38,7 +38,6 @@ const Container = styled.nav`
     height: auto;
     padding: 100px 20px 12px 20px;
     background-color: ${({ theme }) => theme.color.white.hue0};
-    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue2};
     z-index: 999;
 `;

@@ -48,7 +48,6 @@ const Overlay = styled.div`
     height: 100%;
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 9999;
-    backdrop-filter: blur(4px);
 `;
 
 export default MapLayout;
