@@ -5,26 +5,29 @@ import { overlayAtom } from "@/stores/overlay";
 
 type Props = {
     selected?: boolean;
+    label: string;
     children: React.ReactNode;
 };
 
-const FilterButton = ({ selected, children }: Props) => {
+const FilterButton = ({ selected, children, label }: Props) => {
     const setOverlay = useSetRecoilState(overlayAtom);
     return (
         <ButtonContainer
             selected={selected || false}
             onClick={() => setOverlay(true)}
+            label={label}
         >
             {children}
         </ButtonContainer>
     );
 };
 
-const ButtonContainer = styled.button<{ selected: boolean }>`
+const ButtonContainer = styled.button<{ selected: boolean; label: string }>`
     display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     width: auto;
     height: 40px;
     padding: 10px 20px;
@@ -40,10 +43,12 @@ const ButtonContainer = styled.button<{ selected: boolean }>`
         `
         background-color: ${theme.color.primary.hue1};
         border: none;
-        box-shadow: 0px 2px 6px 0px rgba(186, 88, 48, 0.2);
-        font-weight: ${theme.font.Pretendard.bold};
+        font-weight: ${theme.font.Pretendard.medium};
         color: ${theme.color.white.hue3};
     `}
+    &:before {
+        content: "${({ label }) => label}:";
+    }
 `;
 
 export default FilterButton;

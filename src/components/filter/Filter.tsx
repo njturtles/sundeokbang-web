@@ -18,8 +18,9 @@ const Filter = () => {
                         ? false
                         : true
                 }
+                label="보증금"
             >
-                보증금{`: ${formatToWon(filterValue.deposit, depositLimit)}`}
+                <b>{`${formatToWon(filterValue.deposit, depositLimit)}`}</b>
             </FilterButton>
             <FilterButton
                 selected={
@@ -28,8 +29,9 @@ const Filter = () => {
                         ? false
                         : true
                 }
+                label="월세"
             >
-                월세{`: ${formatToWon(filterValue.cost, monthlyLimit)}`}
+                <b>{`${formatToWon(filterValue.cost, monthlyLimit)}`}</b>
             </FilterButton>
         </Container>
     );
