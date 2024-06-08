@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
+import FavButton from "./FavButton";
 
 type Props = {
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
@@ -11,12 +12,21 @@ type Props = {
         deposit: string;
         cost: string;
     };
+    favorite?: boolean;
 };
 
-const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
+const ListCard = ({
+    onClick,
+    imgSrc,
+    title,
+    location,
+    label,
+    favorite = true,
+}: Props) => {
     const formatter = useLocaleFormatter("ko-kr");
     return (
         <Container onClick={onClick || undefined}>
+            <FavButton checked={favorite} />
             <Thumbnail src={imgSrc || undefined} />
             <InfoContainer>
                 <TitleContainer>
@@ -41,6 +51,7 @@ const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
 };
 
 const Container = styled.li`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
