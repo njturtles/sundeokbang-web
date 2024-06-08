@@ -53,7 +53,10 @@ const FilterDetail = () => {
                     max={depositLimit[1]}
                     step={10}
                     onInput={(e: number[]) =>
-                        setLocalValue((prev) => ({ ...prev, deposit: e }))
+                        setLocalValue((prev) => ({
+                            ...prev,
+                            deposit: e,
+                        }))
                     }
                 />
             </DepositContainer>
