@@ -89,7 +89,7 @@ const Container = styled.div`
     justify-content: flex-start;
     gap: 24px;
     width: 100%;
-    height: 500px;
+    height: 470px;
     padding: 25px 20px;
     border: none;
     border-radius: 16px 16px 0 0;
