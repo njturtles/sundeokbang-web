@@ -39,7 +39,7 @@ const Container = styled.nav`
     padding: 100px 20px 12px 20px;
     background-color: ${({ theme }) => theme.color.white.hue0};
     border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue2};
-    z-index: 999;
+    z-index: 99;
 `;
 
 const LocationTitle = styled.h1`
