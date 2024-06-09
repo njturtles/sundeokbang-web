@@ -14,6 +14,7 @@ import useRoomList from "@/queries/useRoomList";
 import { filterAtom } from "@/stores/filter";
 import { useRouter } from "next/router";
 import { markerCluster } from "@/utils/marker-cluster";
+import { AnimatePresence, motion } from "framer-motion";
 
 const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
 
@@ -112,29 +113,65 @@ const Map = () => {
     return (
         <>
             <MapLayout style={{ overflowY: isMapView ? "hidden" : undefined }}>
-                {isMapView && (
-                    <>
-                        <TopNavigation onBack={() => undefined} />
-                        <Script
-                            strategy="afterInteractive"
-                            type="text/javascript"
-                            src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}&callback=initMap`}
-                            onReady={initializeMap}
-                        />
-                        <MapContainer>
-                            <div
-                                id="map"
-                                style={{ width: "100%", height: "100%" }}
-                            ></div>
-                        </MapContainer>
-                        <BottomContainer>
-                            {data?.data.result && (
-                                <AllItemList
-                                    onClick={() => setIsMapView(false)}
+                <TopNavigation onBack={() => setIsMapView((prev) => !prev)} />
+                {!isMapView && (
+                    <ListContainer>
+                        {!data?.data.result && (
+                            <NoItems>설정한 조건의 매물이 없습니다.</NoItems>
+                        )}
+                        {data?.data.result &&
+                            data.data.result.map((room: RoomDataType) => (
+                                <ListCard
+                                    onClick={() =>
+                                        router.push(`/detail/${room._id}`)
+                                    }
+                                    key={room.name}
+                                    title={room.name}
+                                    location={room.address}
+                                    label={{
+                                        deposit: String(
+                                            room.deposit.toLocaleString(
+                                                "ko-kr",
+                                            ),
+                                        ),
+                                        cost: String(
+                                            room.cost.toLocaleString("ko-kr"),
+                                        ),
+                                    }}
+                                    imgSrc={room.imageUrls[0]}
                                 />
-                            )}
-                            <CardContainer>
-                                {detail && (
+                            ))}
+                    </ListContainer>
+                )}
+                <>
+                    <Script
+                        strategy="afterInteractive"
+                        type="text/javascript"
+                        src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}&callback=initMap`}
+                        onReady={initializeMap}
+                    />
+                    <MapContainer>
+                        <div
+                            id="map"
+                            style={{ width: "100%", height: "100%" }}
+                        ></div>
+                        {data?.data.result && (
+                            <AllItemList onClick={() => setIsMapView(false)} />
+                        )}
+                    </MapContainer>
+
+                    <BottomContainer>
+                        <AnimatePresence>
+                            {detail && isMapView && (
+                                <CardContainer
+                                    key="roomCard"
+                                    initial={{ y: 200 }}
+                                    animate={{ y: 0 }}
+                                    exit={{ y: 200 }}
+                                    transition={{
+                                        y: { type: "spring", bounce: 0 },
+                                    }}
+                                >
                                     <Card
                                         onClick={() =>
                                             router.push(`/detail/${detail._id}`)
@@ -148,47 +185,11 @@ const Map = () => {
                                         imgSrc={detail.imageUrls[0]}
                                         closeEvent={() => setDetail(null)}
                                     />
-                                )}
-                            </CardContainer>
-                        </BottomContainer>
-                    </>
-                )}
-                {!isMapView && (
-                    <>
-                        <TopNavigation onBack={() => setIsMapView(true)} />
-                        <ListContainer>
-                            {!data?.data.result && (
-                                <NoItems>
-                                    설정한 조건의 매물이 없습니다.
-                                </NoItems>
+                                </CardContainer>
                             )}
-                            {data?.data.result &&
-                                data.data.result.map((room: RoomDataType) => (
-                                    <ListCard
-                                        onClick={() =>
-                                            router.push(`/detail/${room._id}`)
-                                        }
-                                        key={room.name}
-                                        title={room.name}
-                                        location={room.address}
-                                        label={{
-                                            deposit: String(
-                                                room.deposit.toLocaleString(
-                                                    "ko-kr",
-                                                ),
-                                            ),
-                                            cost: String(
-                                                room.cost.toLocaleString(
-                                                    "ko-kr",
-                                                ),
-                                            ),
-                                        }}
-                                        imgSrc={room.imageUrls[0]}
-                                    />
-                                ))}
-                        </ListContainer>
-                    </>
-                )}
+                        </AnimatePresence>
+                    </BottomContainer>
+                </>
             </MapLayout>
         </>
     );
@@ -209,7 +210,7 @@ const BottomContainer = styled.div`
     padding: 16px;
 `;
 
-const CardContainer = styled.ul`
+const CardContainer = styled(motion.div)`
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -217,14 +218,18 @@ const CardContainer = styled.ul`
     gap: 12px;
     width: 100%;
     height: auto;
+    padding-bottom: 20px;
+    z-index: 999;
 `;
 
 const MapContainer = styled.main`
+    position: relative;
     width: 100%;
     height: 100%;
 `;
 
-const ListContainer = styled.ul`
+const ListContainer = styled(motion.ul)`
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,6 +240,7 @@ const ListContainer = styled.ul`
     padding-top: 12px;
     overflow-y: visible;
     background-color: ${({ theme }) => theme.color.white.hue2};
+    z-index: 999;
 `;
 
 const NoItems = styled.div`
