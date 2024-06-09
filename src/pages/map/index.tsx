@@ -170,6 +170,7 @@ const Map = () => {
                                     exit={{ y: 200 }}
                                     transition={{
                                         y: { type: "spring", bounce: 0 },
+                                        duration: 0.05,
                                     }}
                                 >
                                     <Card
