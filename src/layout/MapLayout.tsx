@@ -22,7 +22,6 @@ const MapLayout = ({
     const bottomSheetRef = useRef<HTMLDivElement | null>(null);
 
     const bgClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-        console.log(e);
         if (e.target !== bottomSheetRef.current) setOverlay(false);
     };
 
