@@ -36,6 +36,7 @@ const Card = ({
                         alignItems: "flex-start",
                         gap: "12px",
                         width: "100%",
+                        height: "70px",
                         marginBottom: "4px",
                     }}
                 >
@@ -62,11 +63,11 @@ const Container = styled.li`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 10px;
-    width: min(100%, 400px);
+    width: 100%;
     height: auto;
-    padding: 20px 10px;
+    padding: 12px;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.color.white.hue0};
     box-shadow: 0px 7px 13px -5px rgba(0, 0, 0, 0.15);
@@ -75,22 +76,26 @@ const Container = styled.li`
 `;
 
 const ItemImage = styled.img`
-    width: 144px;
-    height: 144px;
+    width: 30%;
+    max-width: 150px;
+    height: 100%;
+    aspect-ratio: 1 / 1;
     border: none;
     outline: none;
-    border-radius: 6px;
+    border-radius: 12px 0 0 12px;
     background-color: ${({ theme }) => theme.color.gray.hue1};
+    object-fit: cover;
 `;
 
 const Information = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     gap: 0;
     width: 100%;
     height: 100%;
-    padding: 0px 10px;
+    padding: 10px;
 `;
 
 const ItemTitle = styled.h1`
@@ -118,7 +123,7 @@ const LabelContainer = styled.ul`
     justify-content: flex-end;
     gap: 8px;
     width: 100%;
-    height: 70px;
+    height: auto;
 `;
 
 const Label = styled.li`
@@ -127,7 +132,7 @@ const Label = styled.li`
     padding: 6px 8px;
     border-radius: 6px;
     background-color: ${({ theme }) => theme.color.white.hue3};
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: ${({ theme }) => theme.color.black.hue1};
 `;
 
