@@ -219,7 +219,6 @@ const CardContainer = styled(motion.div)`
     gap: 12px;
     width: 100%;
     height: auto;
-    padding-bottom: 20px;
     z-index: 999;
 `;
 
