@@ -4,3 +4,6 @@ export type Marker = naver.maps.Marker;
 export type MarkerOptions = naver.maps.MarkerOptions;
 export type HtmlIcon = naver.maps.HtmlIcon;
 export type ImageIcon = naver.maps.ImageIcon;
+export interface ClusterType extends Partial<naver.maps.OverlayView> {
+    delMap(): void;
+}

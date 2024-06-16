@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
-import { HtmlIcon, ImageIcon, MapOptions, NaverMap } from "@/types/navermaps";
+import { MapOptions, NaverMap } from "@/types/navermaps";
 import { AllItemList } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
@@ -13,14 +13,10 @@ import { schoolIdAtom } from "@/stores/schoolId";
 import useRoomList from "@/queries/useRoomList";
 import { filterAtom } from "@/stores/filter";
 import { useRouter } from "next/router";
-import { markerCluster } from "@/utils/marker-cluster";
 import { AnimatePresence, motion } from "framer-motion";
+import useCluster from "@/hooks/useCluster";
 
 const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
-
-interface ClusterType extends Partial<naver.maps.OverlayView> {
-    delMap(): void;
-}
 
 const Map = () => {
     const router = useRouter();
@@ -28,14 +24,14 @@ const Map = () => {
     const [isMapView, setIsMapView] = useState<boolean>(true);
     const schoolId = useRecoilValue(schoolIdAtom);
     const filter = useRecoilValue(filterAtom);
+    const [mount, setMount] = useState<boolean>(false);
+    const mapRef = useRef<NaverMap | null>(null);
+    const { addCluster, resetCluster } = useCluster();
     const { data, refetch } = useRoomList(
         schoolId,
         filter.deposit,
         filter.cost,
     );
-    const mapRef = useRef<NaverMap | null>(null);
-
-    const [cluster, setCluster] = useState<ClusterType | null>(null);
 
     useEffect(() => {
         if (filter.deposit && filter.cost) {
@@ -45,61 +41,10 @@ const Map = () => {
     }, [filter]);
 
     useEffect(() => {
-        cluster &&
-            setCluster((prev) => {
-                prev?.delMap();
-                return null;
-            });
-
-        if (isMapView && data?.data.result && mapRef.current) {
-            const MarkerClustering = markerCluster(window.naver);
-            const clusterMarker: HtmlIcon = {
-                content:
-                    '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:1rem;font-weight:600;color:white;text-shadow: 0px 2px 2px rgba(0,0,0,0.3);text-align:center;font-weight:bold;background:url(./assets/icons/cluster-icon.png);background-size:contain;"></div>',
-                size: new naver.maps.Size(40, 40),
-                anchor: new naver.maps.Point(20, 20),
-            };
-
-            const markerIcon: ImageIcon = {
-                url: "./assets/icons/marker-icon.svg",
-                anchor: new naver.maps.Point(12, 24),
-                size: new naver.maps.Size(24, 24),
-            };
-
-            const markers = data?.data.result.map((room) => {
-                const marker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(
-                        room.latitude,
-                        room.longitude,
-                    ),
-                    title: room.name,
-                    icon: markerIcon,
-                });
-                marker.addListener("click", () => setDetail(room));
-                return marker;
-            });
-
-            const clusterObj = new MarkerClustering({
-                minClusterSize: 2,
-                maxZoom: 15,
-                map: mapRef.current,
-                markers: markers,
-                disableClickZoom: false,
-                gridSize: 120,
-                icons: [clusterMarker],
-                indexGenerator: [10, 100, 200, 500, 1000],
-                stylingFunction: function (
-                    clusterMarker: NaverMap,
-                    count: string,
-                ) {
-                    clusterMarker
-                        .getElement()
-                        .querySelector("div:first-child").innerText = count;
-                },
-            });
-            setCluster(clusterObj);
-        }
-    }, [data, isMapView]);
+        resetCluster();
+        if (isMapView && data?.data.result && mount)
+            addCluster(mapRef.current, data?.data.result, setDetail);
+    }, [data, mount]);
 
     const initializeMap = () => {
         const mapOptions: MapOptions = {
@@ -108,6 +53,7 @@ const Map = () => {
 
         const map = new window.naver.maps.Map("map", mapOptions);
         mapRef.current = map;
+        setMount(true);
     };
 
     return (
