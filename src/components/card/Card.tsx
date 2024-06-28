@@ -46,11 +46,11 @@ const Card = ({
                 <LabelContainer>
                     <Label>
                         <b>보증금 </b>
-                        {formatter(Number(label.deposit) * 10000)}원
+                        {formatter(Number(label.deposit))}원
                     </Label>
                     <Label>
                         <b>월세 </b>
-                        {formatter(Number(label.cost) * 10000)}원
+                        {formatter(Number(label.cost))}원
                     </Label>
                 </LabelContainer>
             </Information>
