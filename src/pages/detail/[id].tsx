@@ -75,14 +75,11 @@ const Detail = ({
                         paragraphs={[
                             {
                                 title: "보증금",
-                                content:
-                                    formatter(data?.result.deposit * 10000) +
-                                    "원",
+                                content: formatter(data?.result.deposit) + "원",
                             },
                             {
                                 title: "월세",
-                                content:
-                                    formatter(data?.result.cost * 10000) + "원",
+                                content: formatter(data?.result.cost) + "원",
                             },
                             {
                                 title: "관리비",
