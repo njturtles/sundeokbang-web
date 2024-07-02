@@ -26,7 +26,7 @@ const Card = ({
     return (
         <Container>
             <CloseButton onClick={closeEvent}></CloseButton>
-            {null && <ItemImage src={imgSrc} onClick={onClick} />}
+            {imgSrc && <ItemImage src={imgSrc} onClick={onClick} />}
             <Information onClick={onClick}>
                 <div
                     style={{
@@ -34,10 +34,9 @@ const Card = ({
                         flexDirection: "column",
                         justifyContent: "flex-start",
                         alignItems: "flex-start",
-                        gap: "12px",
+                        gap: "8px",
                         width: "100%",
                         height: "70px",
-                        marginBottom: "4px",
                     }}
                 >
                     <ItemTitle>{title}</ItemTitle>
@@ -58,7 +57,7 @@ const Card = ({
     );
 };
 
-const Container = styled.li`
+const Container = styled.div`
     position: relative;
     display: flex;
     flex-direction: row;
@@ -67,7 +66,7 @@ const Container = styled.li`
     gap: 10px;
     width: 100%;
     height: auto;
-    padding: 12px;
+    padding: 16px;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.color.white.hue0};
     box-shadow: 0px 7px 13px -5px rgba(0, 0, 0, 0.15);
@@ -76,13 +75,11 @@ const Container = styled.li`
 `;
 
 const ItemImage = styled.img`
-    width: 30%;
-    max-width: 150px;
-    height: 100%;
-    aspect-ratio: 1 / 1;
+    width: 120px;
+    height: 120px;
     border: none;
     outline: none;
-    border-radius: 12px 0 0 12px;
+    border-radius: 8px;
     background-color: ${({ theme }) => theme.color.gray.hue1};
     object-fit: cover;
 `;
@@ -94,8 +91,8 @@ const Information = styled.div`
     align-items: center;
     gap: 0;
     width: 100%;
-    height: 100%;
-    padding: 10px;
+    height: auto;
+    padding-left: 12px;
 `;
 
 const ItemTitle = styled.h1`
@@ -109,7 +106,6 @@ const ItemLocation = styled.span`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 4px;
     line-height: 1rem;
     font-size: 0.8rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.medium};
