@@ -12,7 +12,6 @@ const withAuth = (instance: AxiosInstance) => {
         const userToken = getCookie("user");
         instance.interceptors.request.use(
             (config: InternalAxiosRequestConfig) => {
-                console.log("intercept");
                 config.headers["Authorization"] = userToken
                     ? `Bearer ${userToken}`
                     : "";
