@@ -1,3 +1,11 @@
+export interface ThumbnailFile {
+    _id: number;
+    createdAt: string | null;
+    deletedAt: string | null;
+    updatedAt: string | null;
+    url: string;
+}
+
 export interface RoomDataType {
     _id: number;
     name: string;
@@ -21,7 +29,7 @@ export interface RoomDataType {
     owner: string;
     latitude: number;
     longitude: number;
-    imageUrls: string[];
+    files: ThumbnailFile[];
     createdAt: string;
     updatedAt: string;
     distance?: number;
