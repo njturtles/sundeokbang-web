@@ -4,9 +4,10 @@ import ArrowIcon from "@/assets/icons/back-button.svg";
 import CloseIcon from "@/assets/icons/close-icon.svg";
 import Image from "next/image";
 import { ThreeDots } from "react-loader-spinner";
+import { ThumbnailFile } from "@/types/room";
 
 type Props = {
-    images: string[];
+    images: ThumbnailFile[];
     closeEvent: () => void;
 };
 
@@ -47,7 +48,7 @@ const ImageDetail = ({ images, closeEvent }: Props) => {
                     <OptimizedImg
                         alt="방 이미지"
                         fill={true}
-                        src={images[current]}
+                        src={images[current].url}
                         // loading="lazy"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         onLoad={() => setLoading(false)}

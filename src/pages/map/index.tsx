@@ -9,7 +9,6 @@ import TopNavigation from "@/components/navigation/TopNavigation";
 import { RoomDataType } from "@/types/room";
 import ListCard from "@/components/card/ListCard";
 import { useRecoilValue } from "recoil";
-import { schoolIdAtom } from "@/stores/schoolId";
 import useRoomList from "@/queries/useRoomList";
 import { filterAtom } from "@/stores/filter";
 import { useRouter } from "next/router";
@@ -22,15 +21,15 @@ const Map = () => {
     const router = useRouter();
     const [detail, setDetail] = useState<RoomDataType | null>(null);
     const [isMapView, setIsMapView] = useState<boolean>(true);
-    const schoolId = useRecoilValue(schoolIdAtom);
     const filter = useRecoilValue(filterAtom);
     const [mount, setMount] = useState<boolean>(false);
     const mapRef = useRef<NaverMap | null>(null);
     const { addCluster, resetCluster } = useCluster();
     const { data, refetch } = useRoomList(
-        schoolId,
-        filter.deposit,
-        filter.cost,
+        filter.deposit[0],
+        filter.deposit[1],
+        filter.cost[0],
+        filter.cost[1],
     );
 
     useEffect(() => {
@@ -42,8 +41,11 @@ const Map = () => {
 
     useEffect(() => {
         resetCluster();
-        if (isMapView && data?.data.result && mount)
-            addCluster(mapRef.current, data?.data.result, setDetail);
+        if (isMapView && data?.data.result.rows && mount) {
+            if (data.data.code !== 2000)
+                throw Error("An error occured while fetching data.");
+            addCluster(mapRef.current, data?.data.result.rows, setDetail);
+        }
     }, [data, mount]);
 
     const initializeMap = () => {
@@ -58,50 +60,51 @@ const Map = () => {
 
     return (
         <>
+            <Script
+                strategy="afterInteractive"
+                type="text/javascript"
+                src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}&callback=initMap`}
+                onReady={initializeMap}
+            />
             <MapLayout style={{ overflowY: isMapView ? "hidden" : undefined }}>
                 <TopNavigation onBack={() => setIsMapView((prev) => !prev)} />
                 {!isMapView && (
                     <ListContainer>
-                        {!data?.data.result && (
+                        {!data?.data.result.rows && (
                             <NoItems>설정한 조건의 매물이 없습니다.</NoItems>
                         )}
-                        {data?.data.result &&
-                            data.data.result.map((room: RoomDataType) => (
-                                <ListCard
-                                    onClick={() =>
-                                        router.push(`/detail/${room._id}`)
-                                    }
-                                    key={room.name}
-                                    title={room.name}
-                                    location={room.address}
-                                    label={{
-                                        deposit: String(
-                                            room.deposit.toLocaleString(
+                        {data?.data.result.rows &&
+                            data.data.result.rows.map((room: RoomDataType) => {
+                                return (
+                                    <ListCard
+                                        onClick={() =>
+                                            router.push(`/detail/${room._id}`)
+                                        }
+                                        key={room.name}
+                                        title={room.name}
+                                        location={room.address}
+                                        label={{
+                                            deposit:
+                                                room.deposit.toLocaleString(
+                                                    "ko-kr",
+                                                ),
+                                            cost: room.cost.toLocaleString(
                                                 "ko-kr",
                                             ),
-                                        ),
-                                        cost: String(
-                                            room.cost.toLocaleString("ko-kr"),
-                                        ),
-                                    }}
-                                    imgSrc={room.imageUrls[0]}
-                                />
-                            ))}
+                                        }}
+                                        imgSrc={room.files[0].url}
+                                    />
+                                );
+                            })}
                     </ListContainer>
                 )}
                 <>
-                    <Script
-                        strategy="afterInteractive"
-                        type="text/javascript"
-                        src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}&callback=initMap`}
-                        onReady={initializeMap}
-                    />
                     <MapContainer>
-                        <div
+                        <MapDiv
                             id="map"
                             style={{ width: "100%", height: "100%" }}
-                        ></div>
-                        {data?.data.result && (
+                        ></MapDiv>
+                        {data?.data.result.rows && (
                             <AllItemList onClick={() => setIsMapView(false)} />
                         )}
                     </MapContainer>
@@ -129,7 +132,7 @@ const Map = () => {
                                             deposit: `${detail.deposit}`,
                                             cost: `${detail.cost}`,
                                         }}
-                                        imgSrc={detail.imageUrls[0]}
+                                        imgSrc={detail.files[0].url}
                                         closeEvent={() => setDetail(null)}
                                     />
                                 </CardContainer>
@@ -170,6 +173,11 @@ const CardContainer = styled(motion.div)`
 
 const MapContainer = styled.main`
     position: relative;
+    width: 100%;
+    height: 100%;
+`;
+
+const MapDiv = styled.div`
     width: 100%;
     height: 100%;
 `;

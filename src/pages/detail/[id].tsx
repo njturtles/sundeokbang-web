@@ -9,7 +9,6 @@ import DetailSection from "@/components/detail/DetailSection";
 import LocationSection from "@/components/detail/LocationSection";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import useStaticMapURI from "@/hooks/useStaticMapURI";
-import { mockApi } from "@/apis/mock";
 import ImageDetail from "@/components/detail/ImageDetail";
 import {
     GetServerSideProps,
@@ -17,21 +16,29 @@ import {
     InferGetServerSidePropsType,
 } from "next";
 import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
+import { roomApi } from "@/apis/room";
+import cookie from "cookie";
 
 const apiKey = `${process.env.NEXT_PUBLIC_NAVERMAP_API_KEY_STATIC}`;
 const apiSecret = `${process.env.NEXT_PUBLIC_NAVERMAP_API_SECRET_STATIC}`;
 
 export const getServerSideProps = (async ({
     query,
+    req,
 }: GetServerSidePropsContext) => {
+    const token = cookie.parse(req.headers.cookie || "").user;
+
     if (!query.id) return { notFound: true };
-    const response = await mockApi
-        .getRoomById(String(query.id))
-        .then(({ data }) => data)
+    const response = await roomApi
+        .getRoomDetail(String(query.id), token)
+        .then((res) => {
+            console.log(res);
+            return res.data;
+        })
         .catch((e) => {
             throw new Error(`An error occured while fetching data.: ${e}`);
         });
-    if (response.code === 4040) return { notFound: true };
+    if (response.code !== 2000) return { notFound: true };
     return { props: { data: response } };
 }) satisfies GetServerSideProps;
 
@@ -57,12 +64,12 @@ const Detail = ({
             <DefaultLayout>
                 {olVisible && (
                     <ImageDetail
-                        images={data?.result.imageUrls || []}
+                        images={data?.result.files || []}
                         closeEvent={() => setOlVisible(false)}
                     />
                 )}
                 <TopSection
-                    images={data?.result.imageUrls || []}
+                    images={data?.result.files || []}
                     clickEvent={() => setOlVisible(true)}
                 />
                 <MainContainer>

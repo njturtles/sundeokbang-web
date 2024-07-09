@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 import BackButton from "../button/BackButton";
+import { ThumbnailFile } from "@/types/room";
 // import ImageIndicator from "../indicator/ImageIndicator";
 // import Image from "next/image";
 
 type Props = {
-    images: string[];
+    images: ThumbnailFile[];
     clickEvent: () => void;
 };
 
@@ -26,7 +27,7 @@ const TopSection = ({ images, clickEvent }: Props) => {
             <Thumbnail
                 onClick={clickEvent}
                 alt="방 썸네일"
-                src={images[0]}
+                src={images[0].url}
                 width={100}
                 height={100}
                 style={{
