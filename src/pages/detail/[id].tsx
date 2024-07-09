@@ -31,10 +31,7 @@ export const getServerSideProps = (async ({
     if (!query.id) return { notFound: true };
     const response = await roomApi
         .getRoomDetail(String(query.id), token)
-        .then((res) => {
-            console.log(res);
-            return res.data;
-        })
+        .then((res) => res.data)
         .catch((e) => {
             throw new Error(`An error occured while fetching data.: ${e}`);
         });
