@@ -13,10 +13,10 @@ export const roomApi = {
     ) =>
         authInstance.get(`/rooms`, {
             params: {
-                minDeposit: minDeposit || undefined,
-                maxDeposit: maxDeposit || undefined,
-                minCost: minCost || undefined,
-                maxCost: maxCost || undefined,
+                minDeposit: minDeposit,
+                maxDeposit: maxDeposit,
+                minCost: minCost,
+                maxCost: maxCost,
             },
         }),
 };
