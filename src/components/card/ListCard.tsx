@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
 import FavButton from "./FavButton";
 
 type Props = {
@@ -23,7 +22,6 @@ const ListCard = ({
     label,
     favorite = true,
 }: Props) => {
-    const formatter = useLocaleFormatter("ko-kr");
     return (
         <Container onClick={onClick || undefined}>
             <FavButton checked={favorite} />
@@ -37,11 +35,11 @@ const ListCard = ({
                 </TitleContainer>
                 <LabelContainer>
                     <Label>
-                        <b>보증금</b> {formatter(Number(label.deposit))}원
+                        <b>보증금</b> {label.deposit}원
                     </Label>
                     <Label>
                         <b>월세 </b>
-                        {formatter(Number(label.cost))}원
+                        {label.cost}원
                     </Label>
                 </LabelContainer>
             </InfoContainer>
