@@ -51,7 +51,7 @@ const FilterDetail = () => {
                     defaultValue={localValue.deposit}
                     min={depositLimit[0]}
                     max={depositLimit[1]}
-                    step={10}
+                    step={100000}
                     onInput={(e: number[]) =>
                         setLocalValue((prev) => ({
                             ...prev,
@@ -67,7 +67,7 @@ const FilterDetail = () => {
                     defaultValue={localValue.cost}
                     min={monthlyLimit[0]}
                     max={monthlyLimit[1]}
-                    step={10}
+                    step={100000}
                     onInput={(e: number[]) =>
                         setLocalValue((prev) => ({ ...prev, cost: e }))
                     }

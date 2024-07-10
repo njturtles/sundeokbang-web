@@ -1,2 +1,2 @@
-export const depositLimit = [0, 1000];
-export const monthlyLimit = [0, 1000];
+export const depositLimit = [0, 10000000];
+export const monthlyLimit = [0, 10000000];

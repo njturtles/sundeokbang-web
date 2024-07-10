@@ -5,8 +5,9 @@
  * @return {string} 변환된 범위
  */
 const formatToWon = (value: number[], limit: number[]) => {
-    const min: string = value[0] === 0 ? `0원` : `${value[0]}만원`;
-    const max: string = `${value[1]}만원`;
+    const min: string =
+        value[0] === 0 ? `0원` : `${value[0].toLocaleString("ko-kr")}원`;
+    const max: string = `${value[1].toLocaleString("ko-kr")}원`;
     if (value[0] === limit[0] && value[1] === limit[1]) return `전체`;
     return `${value[0] === 0 ? `` : min}~${max}`;
 };
