@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import CommonButton from "../button/CommonButton";
 import CallIcon from "@/assets/icons/call-icon.svg";
@@ -54,10 +54,6 @@ const BottomNavigation = ({
                 });
         }
     };
-
-    useEffect(() => {
-        console.log(fav);
-    }, [fav]);
 
     return (
         <Container>

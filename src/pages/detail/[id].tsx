@@ -33,10 +33,7 @@ export const getServerSideProps = (async ({
     if (!query.id) return { notFound: true };
     const { data }: AxiosResponse<ResponseType> = await roomApi
         .getRoomDetail(String(query.id), token)
-        .then((res) => {
-            console.log(res.data);
-            return res;
-        })
+        .then((res) => res)
         .catch((e) => {
             throw new Error(`An error occured while fetching data.: ${e}`);
         });
