@@ -10,7 +10,7 @@ const useRoomList = (
     maxCost: number,
 ) => {
     const { data, ...rest } = useQuery<AxiosResponse<ResponseType>>({
-        queryKey: [`${new Date().getTime}.schoolId`],
+        queryKey: [`roomList`],
         queryFn: () =>
             roomApi.getRoomsBySchool(minDeposit, maxDeposit, minCost, maxCost),
     });
