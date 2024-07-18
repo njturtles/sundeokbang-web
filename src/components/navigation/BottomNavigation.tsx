@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import CommonButton from "../button/CommonButton";
 import CallIcon from "@/assets/icons/call-icon.svg";
-import StarIcon from "@/assets/icons/star-icon.svg";
 import { roomApi } from "@/apis/room";
 import { ResponseType } from "@/types/response";
 import { AxiosResponse } from "axios";
+import FavIconChecked from "@/assets/icons/favorite-icon-checked.svg";
+import FavIcon from "@/assets/icons/favorite-icon.svg";
 
 const BottomNavigation = ({
     roomId,
@@ -60,10 +61,10 @@ const BottomNavigation = ({
 
     return (
         <Container>
-            <CommonButton type="secondary" onClick={favHandler}>
-                {fav && <StarIcon />}
-                즐겨찾기
-            </CommonButton>
+            <FavButton onClick={favHandler}>
+                {fav && <FavIconChecked />}
+                {!fav && <FavIcon />}
+            </FavButton>
             <CommonButton type="primary" onClick={() => telHref}>
                 <CallIcon />
                 연락하기
@@ -89,6 +90,19 @@ const Container = styled.nav`
     & > button {
         flex-grow: 1;
     }
+`;
+
+const FavButton = styled.button`
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    height: 50px;
+    outline: none;
+    border: none;
+    background: transparent;
+    color: ${({ theme }) => theme.color.primary.hue0};
 `;
 
 export default BottomNavigation;
