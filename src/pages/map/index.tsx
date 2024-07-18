@@ -12,7 +12,7 @@ import { useRecoilValue } from "recoil";
 import useRoomList from "@/queries/useRoomList";
 import { filterAtom } from "@/stores/filter";
 import { useRouter } from "next/router";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import useCluster from "@/hooks/useCluster";
 
 const apiKey = process.env.NEXT_PUBLIC_NAVERMAP_API_KEY;
@@ -41,9 +41,9 @@ const Map = () => {
 
     useEffect(() => {
         resetCluster();
-        if (isMapView && data?.data.result.rows && mount) {
+        if (isMapView && data && mount) {
             if (data.data.code !== 2000)
-                throw Error("An error occured while fetching data.");
+                throw new Error("Unauthorized Request");
             addCluster(mapRef.current, data?.data.result.rows, setDetail);
         }
     }, [data, mount]);
@@ -104,40 +104,27 @@ const Map = () => {
                             id="map"
                             style={{ width: "100%", height: "100%" }}
                         ></MapDiv>
-                        {data?.data.result.rows && (
+                        {data && (
                             <AllItemList onClick={() => setIsMapView(false)} />
                         )}
                     </MapContainer>
 
                     <BottomContainer>
-                        <AnimatePresence>
-                            {detail && isMapView && (
-                                <CardContainer
-                                    key="roomCard"
-                                    initial={{ y: 200 }}
-                                    animate={{ y: 0 }}
-                                    exit={{ y: 200 }}
-                                    transition={{
-                                        y: { type: "spring", bounce: 0 },
-                                        duration: 0.05,
-                                    }}
-                                >
-                                    <Card
-                                        onClick={() =>
-                                            router.push(`/detail/${detail._id}`)
-                                        }
-                                        title={detail.name}
-                                        location={detail.address}
-                                        label={{
-                                            deposit: `${detail.deposit}`,
-                                            cost: `${detail.cost}`,
-                                        }}
-                                        imgSrc={detail.files[0].url}
-                                        closeEvent={() => setDetail(null)}
-                                    />
-                                </CardContainer>
-                            )}
-                        </AnimatePresence>
+                        {detail && isMapView && (
+                            <Card
+                                onClick={() =>
+                                    router.push(`/detail/${detail._id}`)
+                                }
+                                title={detail.name}
+                                location={detail.address}
+                                label={{
+                                    deposit: `${detail.deposit}`,
+                                    cost: `${detail.cost}`,
+                                }}
+                                imgSrc={detail.files[0].url}
+                                closeEvent={() => setDetail(null)}
+                            />
+                        )}
                     </BottomContainer>
                 </>
             </MapLayout>
@@ -158,17 +145,6 @@ const BottomContainer = styled.div`
     height: auto;
     margin: 0 auto;
     padding: 16px;
-`;
-
-const CardContainer = styled(motion.div)`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    height: auto;
-    z-index: 999;
 `;
 
 const MapContainer = styled.main`
