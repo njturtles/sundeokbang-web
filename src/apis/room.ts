@@ -19,4 +19,12 @@ export const roomApi = {
                 maxCost: maxCost,
             },
         }),
+    postFavoriteRoom: (roomId: string, token?: string) =>
+        authInstance.post(`/rooms/${roomId}/favorite`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        }),
+    deleteFavoriteRoom: (roomId: string, token?: string) =>
+        authInstance.delete(`/rooms/${roomId}/favorite`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        }),
 };

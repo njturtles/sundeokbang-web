@@ -33,4 +33,5 @@ export interface RoomDataType {
     createdAt: string;
     updatedAt: string;
     distance?: number;
+    favorited: boolean;
 }

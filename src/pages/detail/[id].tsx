@@ -18,6 +18,8 @@ import {
 import { useLocaleFormatter } from "@/hooks/useLocaleFormatter";
 import { roomApi } from "@/apis/room";
 import cookie from "cookie";
+import { ResponseType } from "@/types/response";
+import { AxiosResponse } from "axios";
 
 const apiKey = `${process.env.NEXT_PUBLIC_NAVERMAP_API_KEY_STATIC}`;
 const apiSecret = `${process.env.NEXT_PUBLIC_NAVERMAP_API_SECRET_STATIC}`;
@@ -29,15 +31,18 @@ export const getServerSideProps = (async ({
     const token = cookie.parse(req.headers.cookie || "").user;
 
     if (!query.id) return { notFound: true };
-    const response = await roomApi
+    const { data }: AxiosResponse<ResponseType> = await roomApi
         .getRoomDetail(String(query.id), token)
-        .then((res) => res.data)
+        .then((res) => {
+            console.log(res.data);
+            return res;
+        })
         .catch((e) => {
             throw new Error(`An error occured while fetching data.: ${e}`);
         });
-    if (response.code !== 2000) return { notFound: true };
-    return { props: { data: response } };
-}) satisfies GetServerSideProps;
+    if (data.code !== 2000) return { notFound: true };
+    return { props: { data: data } };
+}) satisfies GetServerSideProps<{ data: ResponseType }>;
 
 const Detail = ({
     data,
@@ -146,7 +151,11 @@ const Detail = ({
                         <MapImage src={staticMapURI} />
                     </LocationSection>
                 </MainContainer>
-                <BottomNavigation tel={data?.result.phone} />
+                <BottomNavigation
+                    roomId={data.result._id}
+                    tel={data?.result.phone}
+                    initFav={data?.result.favorited}
+                />
             </DefaultLayout>
         </>
     );

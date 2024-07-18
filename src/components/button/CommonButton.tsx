@@ -6,14 +6,16 @@ type Props = {
     children: React.ReactNode;
     onClick?: () => void;
     style?: CSSProperties;
+    disabled?: boolean;
 };
 
-const CommonButton = ({ type, children, onClick, style }: Props) => {
+const CommonButton = ({ type, children, onClick, style, disabled }: Props) => {
     return (
         <Container
             onClick={onClick || undefined}
             $type={type}
             style={{ ...style }}
+            disabled={disabled}
         >
             {children}
         </Container>
