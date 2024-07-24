@@ -61,7 +61,7 @@ const BottomNavigation = ({
                 {fav && <FavIconChecked />}
                 {!fav && <FavIcon />}
             </FavButton>
-            <CommonButton type="primary" onClick={() => telHref}>
+            <CommonButton type="primary" onClick={telHref}>
                 <CallIcon />
                 연락하기
             </CommonButton>
