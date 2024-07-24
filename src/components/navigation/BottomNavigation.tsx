@@ -57,9 +57,10 @@ const BottomNavigation = ({
 
     return (
         <Container>
-            <FavButton onClick={favHandler}>
+            <FavButton onClick={favHandler} favorited={fav}>
                 {fav && <FavIconChecked />}
                 {!fav && <FavIcon />}
+                즐겨찾기
             </FavButton>
             <CommonButton type="primary" onClick={telHref}>
                 <CallIcon />
@@ -75,7 +76,7 @@ const Container = styled.nav`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
     width: min(480px, 100%);
     height: 130px;
@@ -83,22 +84,21 @@ const Container = styled.nav`
     border-top: 1px solid ${({ theme }) => theme.color.gray.hue1};
     background-color: ${({ theme }) => theme.color.white.hue0};
     z-index: 999;
-    & > button {
-        flex-grow: 1;
-    }
 `;
 
-const FavButton = styled.button`
+const FavButton = styled.button<{ favorited: boolean }>`
     display: inline-flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
     height: 50px;
     outline: none;
     border: none;
     background: transparent;
-    color: ${({ theme }) => theme.color.primary.hue0};
+    color: ${({ theme }) => theme.color.gray.hue0};
+    ${({ favorited, theme }) =>
+        favorited && `color: ${theme.color.primary.hue0};`}
 `;
 
 export default BottomNavigation;
