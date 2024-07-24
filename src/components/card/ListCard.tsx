@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import FavButton from "./FavButton";
 
 type Props = {
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
