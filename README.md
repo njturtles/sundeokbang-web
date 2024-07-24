@@ -1,4 +1,4 @@
-![순덕방 썸네일](https://github.com/njturtles/.github/blob/main/sundeokbang-thumbnail.png?raw=true)
+![순덕방 썸네일](https://github.com/njturtles/.github/blob/main/sundeokbang-thumbnail-2.png?raw=true)
 
 ### 📣 프로젝트 소개
 
