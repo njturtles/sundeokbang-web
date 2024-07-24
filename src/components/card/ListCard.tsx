@@ -14,17 +14,9 @@ type Props = {
     favorite?: boolean;
 };
 
-const ListCard = ({
-    onClick,
-    imgSrc,
-    title,
-    location,
-    label,
-    favorite = true,
-}: Props) => {
+const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
     return (
         <Container onClick={onClick || undefined}>
-            <FavButton checked={favorite} />
             <Thumbnail src={imgSrc || undefined} />
             <InfoContainer>
                 <TitleContainer>
