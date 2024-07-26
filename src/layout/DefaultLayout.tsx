@@ -16,7 +16,6 @@ const Container = styled.div`
     margin: 0 auto;
     background: white;
     overflow: hidden;
-    overflow-y: scroll;
 `;
 
 export default DefaultLayout;
