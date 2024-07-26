@@ -1,4 +1,4 @@
-import React, { CSSProperties, useRef } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { FilterDetail } from "@/components/filter";
 import { useRecoilState } from "recoil";
@@ -24,6 +24,12 @@ const MapLayout = ({
     const bgClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target !== bottomSheetRef.current) setOverlay(false);
     };
+
+    useEffect(() => {
+        if (overlay) document.body.style.overflowY = "hidden";
+        if (!overlay)
+            setTimeout(() => (document.body.style.overflowY = ""), 1000);
+    }, [overlay]);
 
     return (
         <Container style={{ ...style }}>
