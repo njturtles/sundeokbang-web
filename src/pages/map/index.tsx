@@ -170,7 +170,7 @@ const ListContainer = styled(motion.ul)`
     padding-top: 12px;
     overflow-y: visible;
     background-color: ${({ theme }) => theme.color.white.hue2};
-    z-index: 999;
+    z-index: 99;
 `;
 
 const NoItems = styled.div`

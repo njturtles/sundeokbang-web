@@ -30,7 +30,7 @@ const Container = styled.button`
     color: ${({ theme }) => theme.color.white.hue0};
     box-shadow: 0px 8px 9px -8px rgba(0, 0, 0, 0.25);
     transform: translateX(-50%);
-    z-index: 99;
+    z-index: 9;
 `;
 
 export default AllItemList;
