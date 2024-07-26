@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import ArrowIcon from "@/assets/icons/back-button.svg";
 import CloseIcon from "@/assets/icons/close-icon.svg";
 import Image from "next/image";
-import { ThreeDots } from "react-loader-spinner";
 import { ThumbnailFile } from "@/types/room";
 
 type Props = {
@@ -13,7 +12,7 @@ type Props = {
 
 const ImageDetail = ({ images, closeEvent }: Props) => {
     const [current, setCurrent] = useState<number>(0);
-    const [loading, setLoading] = useState<boolean>(true);
+
     return (
         <Container>
             <ImageContainer>
@@ -44,14 +43,11 @@ const ImageDetail = ({ images, closeEvent }: Props) => {
                     </NextButton>
                 </ButtonContainer>
                 <OptimizedImgContainer>
-                    {loading && <ThreeDots width="80" height="80" />}
                     <OptimizedImg
                         alt="방 이미지"
                         fill={true}
                         src={images[current].url}
-                        // loading="lazy"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        onLoad={() => setLoading(false)}
                     />
                 </OptimizedImgContainer>
             </ImageContainer>
@@ -70,9 +66,10 @@ const Container = styled.div`
     width: 100%;
     height: 100vh;
     padding: 0 40px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.25);
     overflow: hidden;
     z-index: 9999;
+    backdrop-filter: blur(5px);
 `;
 
 const ImageContainer = styled.div`
