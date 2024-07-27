@@ -156,6 +156,7 @@ const MapContainer = styled.main`
 const MapDiv = styled.div`
     width: 100%;
     height: 100%;
+    z-index: 9;
 `;
 
 const ListContainer = styled(motion.ul)`

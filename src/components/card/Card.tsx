@@ -84,6 +84,7 @@ const Container = styled.div`
     box-shadow: 0px 7px 13px -5px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     flex-shrink: 0;
+    z-index: 99;
 `;
 
 const ImageContainer = styled.div`
