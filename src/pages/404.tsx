@@ -25,7 +25,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     gap: 80px;
-    width: 500px;
+    width: auto;
     height: 100vh;
     margin: 0 auto;
     padding: 0 20px;
@@ -33,8 +33,10 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
+    text-align: center;
     font-size: 1.5rem;
     font-weight: 500;
+    line-height: 2rem;
     color: ${({ theme }) => theme.color.black.hue2};
 `;
 
