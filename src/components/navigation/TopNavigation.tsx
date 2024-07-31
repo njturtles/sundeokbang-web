@@ -36,7 +36,7 @@ const Container = styled.nav`
     gap: 16px;
     width: 100%;
     height: auto;
-    padding: 100px 20px 12px 20px;
+    padding: 40px 20px 12px 20px;
     background-color: ${({ theme }) => theme.color.white.hue0};
     border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue2};
     z-index: 99;
