@@ -21,6 +21,9 @@ const BackButton = ({ onClick, type, style }: Props) => {
 };
 
 const Container = styled.button<{ $type: Props["type"] }>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: auto;
     height: auto;
     border: none;
