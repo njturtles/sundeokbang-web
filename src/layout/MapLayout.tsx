@@ -80,6 +80,7 @@ const Container = styled.div`
     position: relative;
     width: min(480px, 100%);
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     margin: 0 auto;
     background: white;
 `;
