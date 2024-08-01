@@ -76,7 +76,7 @@ const Map = () => {
                 src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}&callback=initMap`}
                 onReady={initializeMap}
             />
-            <MapLayout style={{ overflowY: isMapView ? "hidden" : undefined }}>
+            <MapLayout>
                 <TopNavigation onBack={() => setIsMapView((prev) => !prev)} />
                 {!isMapView && (
                     <ListContainer>
@@ -160,7 +160,7 @@ const BottomContainer = styled.div`
 const MapContainer = styled.main`
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 160px);
 `;
 
 const MapDiv = styled.div`
