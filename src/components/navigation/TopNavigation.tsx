@@ -10,18 +10,10 @@ type Props = {
 const TopNavigation = ({ onBack }: Props) => {
     return (
         <Container>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    gap: "16px",
-                }}
-            >
+            <TopFlexBox>
                 <BackButton type="map" onClick={onBack} />
                 <LocationTitle>순천대학교</LocationTitle>
-            </div>
+            </TopFlexBox>
             <Filter />
         </Container>
     );
@@ -35,17 +27,24 @@ const Container = styled.nav`
     justify-content: center;
     gap: 16px;
     width: 100%;
-    height: auto;
+    height: 160px;
     padding: 40px 20px 12px 20px;
     background-color: ${({ theme }) => theme.color.white.hue0};
     border-bottom: 1px solid ${({ theme }) => theme.color.gray.hue2};
     z-index: 99;
 `;
 
+const TopFlexBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+`;
+
 const LocationTitle = styled.h1`
     display: block;
     width: auto;
-    height: 100%;
     font-size: 1.25rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.medium};
     color: ${({ theme }) => theme.color.black.hue1};
