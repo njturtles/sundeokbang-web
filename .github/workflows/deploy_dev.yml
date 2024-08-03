@@ -67,5 +67,5 @@ jobs:
             - name: Upload Build File & Reload PM2
               run: |
                   scp -i key.pem -o StrictHostKeyChecking=no build.zip ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/${{ secrets.PROJECT_DIR_DEV }}
-                  ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "cd ${{ secrets.PROJECT_DIR_DEV }} && rm -rf .next && unzip build.zip && mv build .next && rm -rf build.zip && pm2 reload ecosystem.config.js"
+                  ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "cd ${{ secrets.PROJECT_DIR_DEV }} && rm -rf .next && unzip build.zip && rm -rf build.zip && pm2 reload ecosystem.config.js"
                   rm -rf key.pem
