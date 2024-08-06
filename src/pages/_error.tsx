@@ -33,8 +33,10 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
+    text-align: center;
     font-size: 1.5rem;
     font-weight: 500;
+    line-height: 2rem;
     color: ${({ theme }) => theme.color.black.hue2};
 `;
 
