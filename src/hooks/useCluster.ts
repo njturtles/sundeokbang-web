@@ -12,6 +12,7 @@ const useCluster = () => {
     const addCluster = (
         map: NaverMap,
         data: RoomDataType[],
+        count: number,
         clickHandler: (room: RoomDataType) => void,
     ) => {
         if (window.naver) {
@@ -50,10 +51,7 @@ const useCluster = () => {
                 gridSize: 120,
                 icons: [clusterIcon],
                 indexGenerator: [10, 100, 200, 500, 1000],
-                stylingFunction: function (
-                    clusterMarker: NaverMap,
-                    count: string,
-                ) {
+                stylingFunction: function (clusterMarker: NaverMap) {
                     clusterMarker
                         .getElement()
                         .querySelector("div:first-child").innerText = count;

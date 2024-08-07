@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
-import { MapOptions, NaverMap } from "@/types/navermaps";
+import {
+    ImageIcon,
+    MapOptions,
+    MarkerOptions,
+    NaverMap,
+} from "@/types/navermaps";
 import { AllItemList } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
@@ -54,9 +59,38 @@ const Map = () => {
         if (isMapView && data && mount) {
             if (data.data.code !== 2000)
                 throw new Error("Unauthorized Request");
-            addCluster(mapRef.current, data?.data.result.rows, setDetail);
+            addCluster(
+                mapRef.current,
+                data?.data.result.rows.filter((item: RoomDataType) =>
+                    detail ? item._id !== detail._id : item,
+                ),
+                data?.data.result.rows.length,
+                (room: RoomDataType) => setDetail(room),
+            );
         }
     }, [data, mount]);
+
+    useEffect(() => {
+        if (detail) {
+            const markerIcon: ImageIcon = {
+                url: "./assets/icons/marker-selected-icon.svg",
+                anchor: new naver.maps.Point(27, 43),
+                size: new naver.maps.Size(39, 51),
+            };
+
+            const markerOptions: MarkerOptions = {
+                map: mapRef.current,
+                icon: markerIcon,
+                position: new naver.maps.LatLng(
+                    detail.latitude,
+                    detail.longitude,
+                ),
+            };
+            const marker = new naver.maps.Marker(markerOptions);
+
+            return () => marker?.setMap(null);
+        }
+    }, [detail]);
 
     const initializeMap = () => {
         const mapOptions: MapOptions = {
@@ -64,6 +98,7 @@ const Map = () => {
         };
 
         const map = new window.naver.maps.Map("map", mapOptions);
+        map.addListener("click", () => setDetail(null));
         mapRef.current = map;
         setMount(true);
     };
