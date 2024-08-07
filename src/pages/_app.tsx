@@ -7,7 +7,9 @@ import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Head from "next/head";
 
-const qClient = new QueryClient();
+const qClient = new QueryClient({
+    defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 const App = ({ Component, pageProps }: AppProps) => {
     return (

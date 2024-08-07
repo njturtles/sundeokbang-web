@@ -17,8 +17,8 @@ const MapMarker = ({ mapRef, pos, title, onClick }: Props) => {
         if (mapRef) {
             const markerIcon: ImageIcon = {
                 url: "./assets/icons/marker-icon.svg",
-                anchor: new naver.maps.Point(12, 24),
-                size: new naver.maps.Size(24, 24),
+                anchor: new naver.maps.Point(28, 35),
+                size: new naver.maps.Size(28, 35),
             };
 
             const markerOptions: MarkerOptions = {

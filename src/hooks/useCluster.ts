@@ -24,8 +24,8 @@ const useCluster = () => {
 
             const markerIcon: ImageIcon = {
                 url: markerIconSrc,
-                anchor: new naver.maps.Point(12, 24),
-                size: new naver.maps.Size(24, 24),
+                anchor: new naver.maps.Point(21, 27),
+                size: new naver.maps.Size(28, 35),
             };
 
             const markers = data.map((room) => {
