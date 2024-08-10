@@ -1,12 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import MapLayout from "@/layout/MapLayout";
 import Script from "next/script";
-import {
-    ImageIcon,
-    MapOptions,
-    MarkerOptions,
-    NaverMap,
-} from "@/types/navermaps";
+import { MapOptions, NaverMap } from "@/types/navermaps";
 import { AllItemList } from "@/components/button";
 import styled from "@emotion/styled";
 import Card from "@/components/card/Card";
@@ -29,12 +24,21 @@ const Map = () => {
     const filter = useRecoilValue(filterAtom);
     const [mount, setMount] = useState<boolean>(false);
     const mapRef = useRef<NaverMap | null>(null);
-    const { addCluster, resetCluster } = useCluster();
+    const { addCluster, resetCluster, resetSelected } = useCluster();
     const { data, refetch } = useRoomList(
         filter.deposit[0],
         filter.deposit[1],
         filter.cost[0],
         filter.cost[1],
+    );
+    const memoizeCluster = useCallback(
+        (
+            mapRef: NaverMap,
+            data: RoomDataType[],
+            count: number,
+            callback: (room: RoomDataType) => void,
+        ) => addCluster(mapRef, data, count, callback),
+        [detail],
     );
 
     useEffect(() => {
@@ -50,47 +54,25 @@ const Map = () => {
     useEffect(() => {
         if (filter.deposit && filter.cost) {
             refetch();
+            resetSelected();
             setDetail(null);
         }
     }, [filter]);
 
     useEffect(() => {
         resetCluster();
+        resetSelected();
         if (isMapView && data && mount) {
             if (data.data.code !== 2000)
                 throw new Error("Unauthorized Request");
-            addCluster(
+            memoizeCluster(
                 mapRef.current,
-                data?.data.result.rows.filter((item: RoomDataType) =>
-                    detail ? item._id !== detail._id : item,
-                ),
-                data?.data.result.rows.length,
-                (room: RoomDataType) => setDetail(room),
+                data.data.result.rows,
+                data.data.result.rows.length,
+                (room: RoomDataType | null) => setDetail(room),
             );
         }
     }, [data, mount]);
-
-    useEffect(() => {
-        if (detail) {
-            const markerIcon: ImageIcon = {
-                url: "./assets/icons/marker-selected-icon.svg",
-                anchor: new naver.maps.Point(27, 43),
-                size: new naver.maps.Size(39, 51),
-            };
-
-            const markerOptions: MarkerOptions = {
-                map: mapRef.current,
-                icon: markerIcon,
-                position: new naver.maps.LatLng(
-                    detail.latitude,
-                    detail.longitude,
-                ),
-            };
-            const marker = new naver.maps.Marker(markerOptions);
-
-            return () => marker?.setMap(null);
-        }
-    }, [detail]);
 
     const initializeMap = () => {
         const mapOptions: MapOptions = {
@@ -98,7 +80,10 @@ const Map = () => {
         };
 
         const map = new window.naver.maps.Map("map", mapOptions);
-        map.addListener("click", () => setDetail(null));
+        map.addListener("click", () => {
+            resetSelected();
+            setDetail(null);
+        });
         mapRef.current = map;
         setMount(true);
     };
@@ -167,7 +152,10 @@ const Map = () => {
                                     cost: `${detail.cost}`,
                                 }}
                                 imgSrc={detail.files[0].url}
-                                closeEvent={() => setDetail(null)}
+                                closeEvent={() => {
+                                    resetSelected();
+                                    setDetail(null);
+                                }}
                             />
                         )}
                     </BottomContainer>
