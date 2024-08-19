@@ -16,7 +16,8 @@ type Props = {
 const ListCard = ({ onClick, imgSrc, title, location, label }: Props) => {
     return (
         <Container onClick={onClick || undefined}>
-            <Thumbnail src={imgSrc || undefined} />
+            {imgSrc && <Thumbnail src={imgSrc || undefined} />}
+            {!imgSrc && <ImagePlaceholder>NO IMAGE</ImagePlaceholder>}
             <InfoContainer>
                 <TitleContainer>
                     <ItemTitle>{title}</ItemTitle>
@@ -62,6 +63,21 @@ const Thumbnail = styled.img`
     border-radius: 10px;
     background-color: ${({ theme }) => theme.color.gray.hue0};
     aspect-ratio: 1 / 1;
+`;
+
+const ImagePlaceholder = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 144px;
+    max-height: 144px;
+    border-radius: 10px;
+    background-color: ${({ theme }) => theme.color.gray.hue1};
+    font-size: 1rem;
+    font-weight: 800;
+    color: ${({ theme }) => theme.color.black.hue2};
 `;
 
 const InfoContainer = styled.div`

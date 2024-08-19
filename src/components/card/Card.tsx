@@ -38,6 +38,7 @@ const Card = ({
                         placeholder={`data:image/svg+xml;base64,77u/PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyMDAgMjAwJz48cmFkaWFsR3JhZGllbnQgaWQ9J2EzJyBjeD0nLjY2JyBmeD0nLjY2JyBjeT0nLjMxMjUnIGZ5PScuMzEyNScgZ3JhZGllbnRUcmFuc2Zvcm09J3NjYWxlKDEuNSknPjxzdG9wIG9mZnNldD0nMCcgc3RvcC1jb2xvcj0nI0Y2Nzg0NCc+PC9zdG9wPjxzdG9wIG9mZnNldD0nLjMnIHN0b3AtY29sb3I9JyNGNjc4NDQnIHN0b3Atb3BhY2l0eT0nLjknPjwvc3RvcD48c3RvcCBvZmZzZXQ9Jy42JyBzdG9wLWNvbG9yPScjRjY3ODQ0JyBzdG9wLW9wYWNpdHk9Jy42Jz48L3N0b3A+PHN0b3Agb2Zmc2V0PScuOCcgc3RvcC1jb2xvcj0nI0Y2Nzg0NCcgc3RvcC1vcGFjaXR5PScuMyc+PC9zdG9wPjxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nI0Y2Nzg0NCcgc3RvcC1vcGFjaXR5PScwJz48L3N0b3A+PC9yYWRpYWxHcmFkaWVudD48Y2lyY2xlIHRyYW5zZm9ybS1vcmlnaW49J2NlbnRlcicgZmlsbD0nbm9uZScgc3Ryb2tlPSd1cmwoI2EzKScgc3Ryb2tlLXdpZHRoPScxNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtZGFzaGFycmF5PScyMDAgMTAwMCcgc3Ryb2tlLWRhc2hvZmZzZXQ9JzAnIGN4PScxMDAnIGN5PScxMDAnIHI9JzcwJz48YW5pbWF0ZVRyYW5zZm9ybSB0eXBlPSdyb3RhdGUnIGF0dHJpYnV0ZU5hbWU9J3RyYW5zZm9ybScgY2FsY01vZGU9J3NwbGluZScgZHVyPScyJyB2YWx1ZXM9JzM2MDswJyBrZXlUaW1lcz0nMDsxJyBrZXlTcGxpbmVzPScwIDAgMSAxJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZSc+PC9hbmltYXRlVHJhbnNmb3JtPjwvY2lyY2xlPjxjaXJjbGUgdHJhbnNmb3JtLW9yaWdpbj0nY2VudGVyJyBmaWxsPSdub25lJyBvcGFjaXR5PScuMicgc3Ryb2tlPScjRjY3ODQ0JyBzdHJva2Utd2lkdGg9JzE1JyBzdHJva2UtbGluZWNhcD0ncm91bmQnIGN4PScxMDAnIGN5PScxMDAnIHI9JzcwJz48L2NpcmNsZT48L3N2Zz4=`}
                     />
                 )}
+                {!imgSrc && <ImagePlaceholder>NO IMAGE</ImagePlaceholder>}
             </ImageContainer>
             <Information onClick={onClick}>
                 <div
@@ -103,6 +104,19 @@ const ItemImage = styled(Image)`
     border-radius: 8px;
     background-color: ${({ theme }) => theme.color.gray.hue1};
     object-fit: cover;
+`;
+
+const ImagePlaceholder = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.color.gray.hue1};
+    font-size: 1rem;
+    font-weight: 800;
+    color: ${({ theme }) => theme.color.black.hue2};
 `;
 
 const Information = styled.div`

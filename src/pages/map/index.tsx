@@ -122,7 +122,7 @@ const Map = () => {
                                                 "ko-kr",
                                             ),
                                         }}
-                                        imgSrc={room.files[0].url}
+                                        imgSrc={room.files[0]?.url || ""}
                                     />
                                 );
                             })}
@@ -151,7 +151,7 @@ const Map = () => {
                                     deposit: `${detail.deposit}`,
                                     cost: `${detail.cost}`,
                                 }}
-                                imgSrc={detail.files[0].url}
+                                imgSrc={detail.files[0]?.url || ""}
                                 closeEvent={() => {
                                     resetSelected();
                                     setDetail(null);
