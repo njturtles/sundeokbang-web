@@ -175,8 +175,7 @@ const ChatContent = styled.div<{ type: "send" | "receive" }>`
     background-color: ${({ theme }) => theme.color.white.hue3};
     color: ${({ theme }) => theme.color.black.hue0};
     line-height: 1.25rem;
-    ${({ type }) => type === "send" && `text-align: right;`}
-    ${({ type }) => type === "receive" && `text-align: left;`}
+    white-space: pre-wrap;
 `;
 
 const ChatTimestamp = styled.span`
