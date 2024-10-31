@@ -97,36 +97,49 @@ const Map = () => {
                 onReady={initializeMap}
             />
             <MapLayout>
-                <TopNavigation onBack={() => setIsMapView((prev) => !prev)} />
+                <TopNavigation />
                 {!isMapView && (
-                    <ListContainer>
-                        {!data?.data.result.rows && (
-                            <NoItems>설정한 조건의 매물이 없습니다.</NoItems>
-                        )}
-                        {data?.data.result.rows &&
-                            data.data.result.rows.map((room: RoomDataType) => {
-                                return (
-                                    <ListCard
-                                        onClick={() =>
-                                            router.push(`/detail/${room._id}`)
-                                        }
-                                        key={room.name}
-                                        title={room.name}
-                                        location={room.address}
-                                        label={{
-                                            deposit:
-                                                room.deposit.toLocaleString(
-                                                    "ko-kr",
-                                                ),
-                                            cost: room.cost.toLocaleString(
-                                                "ko-kr",
-                                            ),
-                                        }}
-                                        imgSrc={room.files[0]?.url || ""}
-                                    />
-                                );
-                            })}
-                    </ListContainer>
+                    <>
+                        <ListContainer>
+                            {!data?.data.result.rows && (
+                                <NoItems>
+                                    설정한 조건의 매물이 없습니다.
+                                </NoItems>
+                            )}
+                            {data?.data.result.rows &&
+                                data.data.result.rows.map(
+                                    (room: RoomDataType) => {
+                                        return (
+                                            <ListCard
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/detail/${room._id}`,
+                                                    )
+                                                }
+                                                key={room.name}
+                                                title={room.name}
+                                                location={room.address}
+                                                label={{
+                                                    deposit:
+                                                        room.deposit.toLocaleString(
+                                                            "ko-kr",
+                                                        ),
+                                                    cost: room.cost.toLocaleString(
+                                                        "ko-kr",
+                                                    ),
+                                                }}
+                                                imgSrc={
+                                                    room.files[0]?.url || ""
+                                                }
+                                            />
+                                        );
+                                    },
+                                )}
+                        </ListContainer>
+                        <ShowMap onClick={() => setIsMapView(true)}>
+                            지도로 보기
+                        </ShowMap>
+                    </>
                 )}
                 <>
                     <MapContainer>
@@ -183,7 +196,7 @@ const BottomContainer = styled.div`
 const MapContainer = styled.main`
     position: relative;
     width: 100%;
-    height: calc(100% - 160px);
+    height: calc(100% - 100px);
 `;
 
 const MapDiv = styled.div`
@@ -217,6 +230,24 @@ const NoItems = styled.div`
     padding-top: 100px;
     font-size: 1.25rem;
     color: ${({ theme }) => theme.color.gray.hue2};
+`;
+
+const ShowMap = styled.button`
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    width: auto;
+    height: 48px;
+    padding: 0 28px;
+    border: none;
+    border-radius: 16px;
+    background-color: ${({ theme }) => theme.color.primary.hue1};
+    font-size: 1rem;
+    font-weight: ${({ theme }) => theme.font.Pretendard.medium};
+    color: ${({ theme }) => theme.color.white.hue0};
+    box-shadow: 0px 8px 9px -8px rgba(0, 0, 0, 0.25);
+    transform: translateX(-50%);
+    z-index: 99;
 `;
 
 export default Map;
