@@ -7,9 +7,15 @@ import OtherIcon from "@/assets/icons/other-icon.svg";
 
 type Props = {
     title: string;
+    options: {
+        furniture?: string;
+        appliances?: string;
+        prevention?: string;
+        etc?: string;
+    };
 };
 
-const OptionsSection = ({ title }: Props) => {
+const OptionsSection = ({ title, options }: Props) => {
     return (
         <Container>
             <Title>{title}</Title>
@@ -22,7 +28,7 @@ const OptionsSection = ({ title }: Props) => {
                     <Divider />
                     <OptionParagraph>
                         <OptionTitle>가구 옵션</OptionTitle>
-                        <OptionContent>ㅁㄴㅇㄹ</OptionContent>
+                        <OptionContent>{options.furniture || ""}</OptionContent>
                     </OptionParagraph>
                 </Options>
                 {/* 가전 옵션 */}
@@ -33,7 +39,9 @@ const OptionsSection = ({ title }: Props) => {
                     <Divider />
                     <OptionParagraph>
                         <OptionTitle>가전 옵션</OptionTitle>
-                        <OptionContent>ㅁㄴㅇㄹ</OptionContent>
+                        <OptionContent>
+                            {options.appliances || ""}
+                        </OptionContent>
                     </OptionParagraph>
                 </Options>
                 {/* 방범 옵션 */}
@@ -44,7 +52,9 @@ const OptionsSection = ({ title }: Props) => {
                     <Divider />
                     <OptionParagraph>
                         <OptionTitle>방범 옵션</OptionTitle>
-                        <OptionContent>ㅁㄴㅇㄹ</OptionContent>
+                        <OptionContent>
+                            {options.prevention || ""}
+                        </OptionContent>
                     </OptionParagraph>
                 </Options>
                 {/* 기타 옵션 */}
@@ -55,7 +65,7 @@ const OptionsSection = ({ title }: Props) => {
                     <Divider />
                     <OptionParagraph>
                         <OptionTitle>기타 옵션</OptionTitle>
-                        <OptionContent>ㅁㄴㅇㄹ</OptionContent>
+                        <OptionContent>{options.etc || ""}</OptionContent>
                     </OptionParagraph>
                 </Options>
             </OptionsContainer>

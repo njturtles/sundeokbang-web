@@ -1,0 +1,71 @@
+name: Development Build & Deploy
+
+on:
+    push:
+        branches:
+            - develop
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup node
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 20
+                  cache: "yarn"
+
+            - name: Get Yarn Cache Directory
+              id: yarn-cache
+              run: echo "cache_dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+            - name: Caching Dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ${{ steps.yarn-cache.outputs.cache_dir }}
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
+            - name: Install Dependencies
+              run: yarn --prefer-offline
+
+            - name: Build Project with Envorionment Variables
+              run: |
+                  cat << EOF >> .env
+                  ${{ secrets.ENV_DEV }}
+                  EOF
+                  yarn build
+
+            - name: Zipping Build Artifact
+              run: zip -r build.zip ./.next/*
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: next_build
+                  path: build.zip
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Download Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: next_build
+
+            - name: Get SSH Key
+              run: |
+                  echo "${{ secrets.EC2_SSH_KEY }}" >> key.pem
+                  chmod 600 key.pem
+
+            - name: Upload Build File & Reload PM2
+              run: |
+                  scp -i key.pem -o StrictHostKeyChecking=no build.zip ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/${{ secrets.PROJECT_DIR_DEV }}
+                  ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "cd ${{ secrets.PROJECT_DIR_DEV }} && rm -rf .next && unzip build.zip && rm -rf build.zip && pm2 reload ecosystem.config.js"
+                  rm -rf key.pem

@@ -3,21 +3,22 @@ import styled from "@emotion/styled";
 
 type Props = {
     title: string;
+    paragraphs: { title: string; content?: string }[];
 };
 
-const SectionContainer = ({ title }: Props) => {
+const SectionContainer = ({ title, paragraphs }: Props) => {
     return (
         <Container>
             <Title>{title}</Title>
             <Paragraphs>
-                <Paragraph>
-                    <ParagraphTitle>asdf</ParagraphTitle>
-                    <ParagraphContent>asdf</ParagraphContent>
-                </Paragraph>
-                <Paragraph>
-                    <ParagraphTitle>asdf</ParagraphTitle>
-                    <ParagraphContent>asdf</ParagraphContent>
-                </Paragraph>
+                {paragraphs.map((para) => (
+                    <Paragraph key={para.title}>
+                        <ParagraphTitle>{para.title}</ParagraphTitle>
+                        <ParagraphContent>
+                            {para.content || ""}
+                        </ParagraphContent>
+                    </Paragraph>
+                ))}
             </Paragraphs>
         </Container>
     );
@@ -60,7 +61,7 @@ const Paragraph = styled.li`
 
 const ParagraphTitle = styled.span`
     display: block;
-    width: 80px;
+    width: 100px;
     height: 100%;
     font-size: 1rem;
     font-weight: ${({ theme }) => theme.font.Pretendard.medium};

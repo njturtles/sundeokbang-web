@@ -24,7 +24,7 @@ const Container = styled.section`
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
     width: 100%;
     height: 120px;
     padding: 16px 28px;

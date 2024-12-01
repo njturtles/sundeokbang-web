@@ -85,8 +85,6 @@ const reset = css`
         margin: 0;
         padding: 0;
         border: 0;
-        font-size: 62.5%;
-        font: inherit;
         vertical-align: baseline;
     }
 

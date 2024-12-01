@@ -7,5 +7,5 @@ export interface IFilter {
     /**
      * 방 월세 타입
      */
-    monthly: number[];
+    cost: number[];
 }

@@ -1,24 +1,76 @@
-import React, { useRef } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { FilterDetail } from "@/components/filter";
 import { useRecoilState } from "recoil";
 import { overlayAtom } from "@/stores/overlay";
+import { AnimatePresence, motion } from "framer-motion";
 
-const MapLayout = ({ children }: { children: React.ReactNode }) => {
+const variants = {
+    animate: { y: 0 },
+    initial: { y: 470 },
+    exit: { y: 470 },
+};
+
+const MapLayout = ({
+    children,
+    style,
+}: {
+    children: React.ReactNode;
+    style?: CSSProperties;
+}) => {
     const [overlay, setOverlay] = useRecoilState(overlayAtom);
-    const overlayRef = useRef<HTMLDivElement | null>(null);
+    const bottomSheetRef = useRef<HTMLDivElement | null>(null);
 
-    const overlayClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === overlayRef.current) setOverlay(false);
+    const bgClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.target !== bottomSheetRef.current) setOverlay(false);
     };
 
+    useEffect(() => {
+        if (overlay) document.body.style.overflowY = "hidden";
+        if (!overlay)
+            setTimeout(() => (document.body.style.overflowY = ""), 1000);
+    }, [overlay]);
+
     return (
-        <Container onClick={overlayClickHandler}>
-            {overlay && (
-                <Overlay ref={overlayRef}>
-                    <FilterDetail />
-                </Overlay>
-            )}
+        <Container style={{ ...style }}>
+            <AnimatePresence>
+                {overlay && (
+                    <>
+                        <FilterContainer ref={bottomSheetRef}>
+                            <motion.div
+                                key="filter"
+                                variants={variants}
+                                animate="animate"
+                                initial="initial"
+                                exit="exit"
+                                transition={{
+                                    y: { type: "spring", bounce: 0 },
+                                    duration: 0.1,
+                                }}
+                                style={{ width: "100%", height: "470px" }}
+                            >
+                                <FilterDetail />
+                            </motion.div>
+                        </FilterContainer>
+                        <motion.div
+                            key="background"
+                            animate={{ opacity: 1 }}
+                            initial={{ opacity: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={bgClickHandler}
+                            style={{
+                                position: "absolute",
+                                width: "100%",
+                                height: "100%",
+                                zIndex: "999",
+                                backgroundColor: "rgba(0,0,0,0.1)",
+                                backdropFilter: "blur(5px)",
+                            }}
+                        />
+                    </>
+                )}
+            </AnimatePresence>
             {children}
         </Container>
     );
@@ -28,22 +80,21 @@ const Container = styled.div`
     position: relative;
     width: min(480px, 100%);
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     margin: 0 auto;
     background: white;
-    overflow: hidden;
 `;
 
-const Overlay = styled.div`
-    display: flex;
+const FilterContainer = styled.div`
+    position: absolute;
+    bottom: 0;
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    position: absolute;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    z-index: 9999;
-    backdrop-filter: blur(4px);
+    height: auto;
+    z-index: 99999;
 `;
 
 export default MapLayout;

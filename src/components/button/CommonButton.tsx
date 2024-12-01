@@ -1,15 +1,22 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import styled from "@emotion/styled";
 
 type Props = {
     type: "primary" | "secondary";
     children: React.ReactNode;
     onClick?: () => void;
+    style?: CSSProperties;
+    disabled?: boolean;
 };
 
-const CommonButton = ({ type, children, onClick }: Props) => {
+const CommonButton = ({ type, children, onClick, style, disabled }: Props) => {
     return (
-        <Container onClick={onClick || undefined} $type={type}>
+        <Container
+            onClick={onClick || undefined}
+            $type={type}
+            style={{ ...style }}
+            disabled={disabled}
+        >
             {children}
         </Container>
     );
@@ -20,7 +27,6 @@ const Container = styled.button<{ $type: Props["type"] }>`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
     gap: 8px;
     min-width: 120px;
     height: 50px;
